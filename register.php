@@ -1,7 +1,10 @@
 <?php
 
 include 'connect.php';
-if (isset($_POST['submit'])) {
+if (
+    isset($_POST['submit']) && !empty($_POST['userId'])
+    && !empty($_POST['password'])
+) {
     $userId = $_POST['userId'];
     $password = $_POST['password'];
     $sql = "INSERT INTO Users (userId, password, userLevel) 
@@ -43,10 +46,10 @@ if (isset($_POST['submit'])) {
     <div class="container">
         <h1>Register</h1>
         <form method="post" name="submit">
-            <input type="text" name="userId" class="form-control" placeholder="UserId"></input>
+            <input required type="text" name="userId" class="form-control" placeholder="UserId"></input>
             <br />
 
-            <input type="text" name="password" class="form-control" placeholder="Password"></input>
+            <input required type="password" name="password" class="form-control" placeholder="Password"></input>
             <br />
 
             <button class="btn btn-info" name="submit" type="submit">Submit</button>

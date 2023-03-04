@@ -1,4 +1,10 @@
 <?php
+ob_start();
+session_start();
+?>
+
+
+<?php
 
 include 'connect.php';
 if (isset($_POST['submit'])) {
@@ -14,6 +20,9 @@ if (isset($_POST['submit'])) {
 
     } else {
         echo "Authenticated";
+        $_SESSION['valid'] = true;
+        $_SESSION['timeout'] = time();
+        $_SESSION['userId'] = $userId;
         header("Location: /DC_Project/homePage.php");
     }
     $conn->close();
@@ -40,10 +49,10 @@ if (isset($_POST['submit'])) {
         <br />
         <form method="post" name="submit">
 
-            <input type="text" name="userId" class="form-control" placeholder="UserId"></input>
+            <input required type="text" name="userId" class="form-control" placeholder="UserId"></input>
             <br />
 
-            <input type="text" name="password" class="form-control" placeholder="Password"></input>
+            <input required type="password" name="password" class="form-control" placeholder="Password"></input>
             <br />
 
             <button class="btn btn-info" name="submit" type="submit">Submit</button>

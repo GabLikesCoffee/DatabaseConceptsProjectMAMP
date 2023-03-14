@@ -1,4 +1,5 @@
 <?php
+// josh test
 session_start();
 echo ("Welcome " . $_SESSION['userId'] . "!");
 ?>

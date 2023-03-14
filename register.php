@@ -56,7 +56,7 @@ if (
             <br />
 
         </form>
-        <a href="/DC_ProjectMAMP/login.php"><button class="btn-lg">Log in!</button></a>
+        <a href="/DC_Project/login.php"><button class="btn-lg">Log in!</button></a>
     </div>
 </body>
 

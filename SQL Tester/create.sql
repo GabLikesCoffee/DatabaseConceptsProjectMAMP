@@ -30,10 +30,6 @@ CREATE TABLE `Universities` (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `Universities` (
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `Comments` (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

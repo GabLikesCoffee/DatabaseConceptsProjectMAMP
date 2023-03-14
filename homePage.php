@@ -1,5 +1,5 @@
 <?php
-// josh test
+// josh test part 2
 session_start();
 echo ("Welcome " . $_SESSION['userId'] . "!");
 ?>

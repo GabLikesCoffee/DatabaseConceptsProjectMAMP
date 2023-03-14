@@ -1,0 +1,36 @@
+CREATE TABLE `Users` (
+  `userId` char(40) DEFAULT NULL,
+  `password` char(40) DEFAULT NULL,
+  `userLevel` char(40) DEFAULT NULL
+  `email` char(40) DEFAULT NULL,
+  `university` char(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `Events` (
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Universities` (
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Universities` (
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Comments` (
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Likes` (
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `CreateRSO` (
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `RSO` (
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

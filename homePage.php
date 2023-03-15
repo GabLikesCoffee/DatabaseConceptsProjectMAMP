@@ -1,3 +1,38 @@
+
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <h1>
+        Home Page
+    </h1>
+    <p>Click here to clean <a href="logout.php" tite="Logout">Session AKA log out.</p>
+
+    <div class = "record-container"  style="overflow-y:auto">
+                    <div class="tables">
+                        <div class="content-table" id="contactsTable">
+                            <table id="contacts">
+                                <thead>
+                                    <tr>
+                                        <th>Event</th>
+                                        <th>Category</th>
+                                        <th>Descritpion</th>
+                                        <th>Time</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableInformation"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+</body>
+
+</html>
+
 <?php
 include 'connect.php';
 session_start();
@@ -11,9 +46,42 @@ $result = $conn->query($sqlEvents);
 $numExists = $result->num_rows;
 if ($numExists > 0) {
     // output data of each row
+
+    // start of the table
+    echo " 
+        <script type=\"text/javascript\">
+            let insertTable = '<table border=1>';
+        </script>
+    ";
+    
+
     while ($row = $result->fetch_assoc()) {
-        echo "Name: " . $row["name"] . " - Category: " . $row["category"] . " - Description: " . $row["description"] . " - Time: " . $row["time"] . " - Date: " . $row["date"] . " - Location: " . $row["location"] . " - Contact Phone: " . $row["contactPhone"] . " - Contact Email: " . $row["contactEmail"] . "<br>" . "<br>";
+        // echo "Name: " . $row["name"] . " - Category: " . $row["category"] . " - Description: " . $row["description"] . " - Time: " . $row["time"] . " - Date: " . $row["date"] . " - Location: " . $row["location"] . " - Contact Phone: " . $row["contactPhone"] . " - Contact Email: " . $row["contactEmail"] . "<br>" . "<br>";
+
+        echo "
+            <script type=\"text/javascript\">
+                insertTable += '<tr>'
+
+                insertTable += '<td>\"$row[name]\"</td>';
+                insertTable += '<td>\"$row[category]\"</td>';
+                insertTable += '<td>\"$row[description]\"</td>';
+                insertTable += '<td>\"$row[time]\"</td>';
+                insertTable += '<td>\"$row[date]\"</td>';
+                
+
+                insertTable += '</tr>';
+            
+            </script>
+        ";
     }
+
+    // end of table
+    echo "
+        <script type=\"text/javascript\">
+            insertTable += '</table>';
+            document.getElementById('tableInformation').innerHTML = insertTable;
+        </script>
+        ";
 } else {
     echo "0 results";
 }
@@ -22,17 +90,62 @@ echo ("Welcome " . $_SESSION['userId'] . "!");
 $conn->close();
 ?>
 
-<html>
+<style>
 
-<head>
+    .record-container
+    {
+        border-radius: 10px;
+        height: 600px;
+        padding: 20px 0;
+        margin: 30px 0;
+        box-shadow: 0px 0px 3px 0px rgba(1, 0, 1, 1);
+        -webkit-box-shadow: 0px 0px 2px 0px rgba(1, 0, 1, 1);
+        /* color: rgb(65 54 54); */
+    }
 
-</head>
+    .tables
+    {
+        width:100%;
+        height:100%;
+        table-layout: fixed;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        border-radius: 10px;
+    }
 
-<body>
-    <h1>
-        Home Page
-    </h1>
-    <p>Click here to clean <a href="logout.php" tite="Logout">Session AKA log out.</p>
-</body>
+    table
+    {
+        border: 1;
+    }
 
-</html>
+    .content-table {
+        height: 460px;
+        overflow-x: auto;
+        margin-top: 0px;
+        border-radius: 10px;
+    }
+
+
+    #contacts td
+    {
+        border: .5px solid rgb(0, 0, 0);
+    }
+
+    #contacts th 
+    {
+        border: .5px solid rgb(0, 0, 0);
+    }
+
+    #contacts th 
+    {
+        padding: 20px 15px;
+        font-family: 'Karla';
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #9fad8f;;
+        text-transform: uppercase;
+        width: 200px;
+        text-align: center;
+}
+</style>

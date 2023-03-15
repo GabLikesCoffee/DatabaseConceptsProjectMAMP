@@ -3,23 +3,38 @@
 include 'connect.php';
 if (
     isset($_POST['submit']) && !empty($_POST['userId'])
-    && !empty($_POST['password'])
+    && !empty($_POST['password']) && !empty($_POST['email']) && !empty($_POST['university'])
 ) {
     $userId = $_POST['userId'];
     $password = $_POST['password'];
+    $email = $_POST['email'];
+    $university = $_POST['university'];
+
     $sql = "INSERT INTO Users (userId, password, userLevel) 
     VALUES ('$userId', '$password', 'student')";
 
-    $sqlu = "SELECT * FROM Users WHERE userId='$userId'";
-    $result = $conn->query($sqlu);
-    $numExists = $result->num_rows;
+    $sql2 = "INSERT INTO Users (userId, password, userLevel, university, email) 
+    VALUES ('$userId', '$password', 'student', '$university', '$email')";
 
-    if ($numExists == 0) {
+    $sqlUserIDExists = "SELECT * FROM Users WHERE userId='$userId'";
+    $sqlUniExist = "SELECT * FROM Universities WHERE name='$university'";
+
+    $result = $conn->query($sqlUserIDExists);
+    $numIDExists = $result->num_rows;
+
+    $result2 = $conn->query($sqlUniExist);
+    $numUniExists = $result2->num_rows;
+
+    if ($numIDExists == 0) {
         echo "Good userId";
-        if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully. Select the log in button to proceed.";
+        if ($numUniExists > 0) {
+            if ($conn->query($sql2) === TRUE) {
+                echo "New record created successfully. Select the log in button to proceed.";
+            } else {
+                echo "Error: " . $sql2 . "<br>" . $conn->error;
+            }
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "University does not exist";
         }
     } else {
         echo "bad userId";
@@ -55,10 +70,10 @@ if (
 
             <!-- needs user level input -->
 
-            <input  type="email" name="email" class="form-control" placeholder="Email"></input>
+            <input type="email" name="email" class="form-control" placeholder="Email"></input>
             <br />
 
-            <input  type="text" name="university" class="form-control" placeholder="University"></input>
+            <input type="text" name="university" class="form-control" placeholder="University"></input>
             <br />
 
             <div class="btn-div">
@@ -76,70 +91,60 @@ if (
 </html>
 
 <style>
+    body {
+        background-color: #36454F;
+        margin-bottom: 200px;
+    }
 
-body
-{
-    background-color: #36454F;
-    margin-bottom: 200px;
-}
+    h1 {
+        font-size: 65px;
+        color: white;
+        text-align: center;
+    }
 
-h1
-{
-    font-size: 65px;
-    color: white;
-    text-align: center;
-}
+    .btn-div {
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-.btn-div
-{
-    font-size: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    button {
+        background-color: #E9D3FF;
+        height: 40px;
+        width: 300px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: opacity 0.35, color 0.35s;
+        box-shadow: 5px 5px 10px black(0, 0, 0, .15);
+        transition: box-shadow 0.15s;
+        transition: background-color 0.15s;
+        text-align: center;
+    }
 
-button
-{
-    background-color: #E9D3FF;
-    height:40px;
-    width: 300px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: opacity 0.35, color 0.35s;
-    box-shadow:  5px 5px 10px black(0, 0, 0, .15);
-    transition: box-shadow 0.15s;
-    transition: background-color 0.15s;
-    text-align: center;
-}
+    button:hover {
+        background-color: rgb(255, 255, 255);
+    }
 
-button:hover
-{
-    background-color: rgb(255, 255, 255);
-}
+    form {
+        align-items: center;
+        width: 250px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-form
-{
-    align-items: center;
-    width: 250px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.form-control
-{
-    color: black;
-    font-size: 20px;
-    text-align: left;
-    border: none;
-    border-radius: 6px;
-    height:40px;
-    width: 300px;
-    padding-bottom: 5px;
-    background-color: grey;
-}
-
-
+    .form-control {
+        color: black;
+        font-size: 20px;
+        text-align: left;
+        border: none;
+        border-radius: 6px;
+        height: 40px;
+        width: 300px;
+        padding-bottom: 5px;
+        background-color: grey;
+    }
 </style>

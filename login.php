@@ -23,6 +23,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['valid'] = true;
         $_SESSION['timeout'] = time();
         $_SESSION['userId'] = $userId;
+        $_SESSION['university'] = $university;
         header("Location: /DC_Project/homePage.php");
     }
     $conn->close();
@@ -70,70 +71,60 @@ if (isset($_POST['submit'])) {
 </html>
 
 <style>
+    body {
+        background-color: #36454F;
+        margin-bottom: 200px;
+    }
 
-body
-{
-    background-color: #36454F;
-    margin-bottom: 200px;
-}
+    h1 {
+        font-size: 65px;
+        color: white;
+        text-align: center;
+    }
 
-h1
-{
-    font-size: 65px;
-    color: white;
-    text-align: center;
-}
+    .btn-div {
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-.btn-div
-{
-    font-size: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    button {
+        background-color: #E9D3FF;
+        height: 40px;
+        width: 300px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: opacity 0.35, color 0.35s;
+        box-shadow: 5px 5px 10px black(0, 0, 0, .15);
+        transition: box-shadow 0.15s;
+        transition: background-color 0.15s;
+        text-align: center;
+    }
 
-button
-{
-    background-color: #E9D3FF;
-    height:40px;
-    width: 300px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: opacity 0.35, color 0.35s;
-    box-shadow:  5px 5px 10px black(0, 0, 0, .15);
-    transition: box-shadow 0.15s;
-    transition: background-color 0.15s;
-    text-align: center;
-}
+    button:hover {
+        background-color: rgb(255, 255, 255);
+    }
 
-button:hover
-{
-    background-color: rgb(255, 255, 255);
-}
+    form {
+        align-items: center;
+        width: 250px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-form
-{
-    align-items: center;
-    width: 250px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.form-control
-{
-    color: black;
-    font-size: 20px;
-    text-align: left;
-    border: none;
-    border-radius: 6px;
-    height:40px;
-    width: 300px;
-    padding-bottom: 5px;
-    background-color: grey;
-}
-
-
+    .form-control {
+        color: black;
+        font-size: 20px;
+        text-align: left;
+        border: none;
+        border-radius: 6px;
+        height: 40px;
+        width: 300px;
+        padding-bottom: 5px;
+        background-color: grey;
+    }
 </style>

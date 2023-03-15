@@ -39,25 +39,107 @@ if (
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <title>APP</title>
+    <title>Register</title>
 </head>
 
 <body>
     <div class="container">
-        <h1>Register</h1>
+        <h1>Welcome!</h1>
         <form method="post" name="submit">
-            <input required type="text" name="userId" class="form-control" placeholder="UserId"></input>
+
+            <input required type="text" name="userId" class="form-control" placeholder="User ID"></input>
             <br />
 
             <input required type="password" name="password" class="form-control" placeholder="Password"></input>
             <br />
 
-            <button class="btn btn-info" name="submit" type="submit">Submit</button>
+            <!-- needs user level input -->
+
+            <input  type="email" name="email" class="form-control" placeholder="Email"></input>
             <br />
 
+            <input  type="text" name="university" class="form-control" placeholder="University"></input>
+            <br />
+
+            <div class="btn-div">
+                <button name="submit" type="submit">Register</button>
+                <br />
+            </div>
+
         </form>
-        <a href="/DC_Project/login.php"><button class="btn-lg">Log in!</button></a>
+        <div class="btn-div">
+            <button onclick="window.location.href = '/DC_Project/login.php';">Login</button>
+        </div>
     </div>
 </body>
 
 </html>
+
+<style>
+
+body
+{
+    background-color: #36454F;
+    margin-bottom: 200px;
+}
+
+h1
+{
+    font-size: 65px;
+    color: white;
+    text-align: center;
+}
+
+.btn-div
+{
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button
+{
+    background-color: #E9D3FF;
+    height:40px;
+    width: 300px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.35, color 0.35s;
+    box-shadow:  5px 5px 10px black(0, 0, 0, .15);
+    transition: box-shadow 0.15s;
+    transition: background-color 0.15s;
+    text-align: center;
+}
+
+button:hover
+{
+    background-color: rgb(255, 255, 255);
+}
+
+form
+{
+    align-items: center;
+    width: 250px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-control
+{
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    border: none;
+    border-radius: 6px;
+    height:40px;
+    width: 300px;
+    padding-bottom: 5px;
+    background-color: grey;
+}
+
+
+</style>

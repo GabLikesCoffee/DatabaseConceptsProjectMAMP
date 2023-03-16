@@ -23,7 +23,6 @@ if (isset($_POST['submit'])) {
         $_SESSION['valid'] = true;
         $_SESSION['timeout'] = time();
         $_SESSION['userId'] = $userId;
-        $_SESSION['university'] = $university;
         header("Location: /DC_Project/homePage.php");
     }
     $conn->close();

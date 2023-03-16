@@ -1,4 +1,3 @@
-
 <html>
 
 <head>
@@ -18,29 +17,30 @@
         </button>
     </div>
 
-    <div class = "record-container"  style="overflow-y:auto">
-                    <div class="tables">
+    <div class="record-container" style="overflow-y:auto">
+        <div class="tables">
                         <div class="search-content">
                             <input type="text" id="myInput" class="search-bar" onkeyup='tableSearch()' placeholder="Search for event...">
                         </div>
-                        <div class="content-table" id="contactsTable">
-                            <table id="contacts">
-                                <thead>
-                                    <tr>
-                                        <th>Event</th>
-                                        <th>Category</th>
-                                        <th>Descritpion</th>
-                                        <th>Time</th>
-                                        <th>Date</th>
-                                        <th>Location</th>
-                                        <th>Contact</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableInformation"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            <div class="content-table" id="contactsTable">
+                <table id="contacts">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Category</th>
+                            <th>Descritpion</th>
+                            <th>Time</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableInformation"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="approveEventBtnDiv"></div>
 </body>
 
 </html>
@@ -48,10 +48,33 @@
 <?php
 include 'connect.php';
 session_start();
+
 //Checks that the user is logged in. If not, redirect to the login screen.
 if (!$_SESSION['userId']) {
     header("Location: /DC_Project/login.php");
 }
+$userId = $_SESSION['userId'];
+
+$sqlCheckAdmin = "SELECT * FROM Users WHERE userId='$userId'";
+$sqlCheckAdminResults = $conn->query($sqlCheckAdmin);
+
+$item = $sqlCheckAdminResults->fetch_assoc();
+
+if ($item) {
+    $userLevel = $item["userLevel"];
+    echo $userLevel;
+}
+
+if ($userLevel == "admin") {
+    echo " 
+        <script type=\"text/javascript\">
+            let insertButton = '<a href=approveEvents.php><button>Approve Events</button></a>';
+            document.getElementById('approveEventBtnDiv').innerHTML = insertButton;
+        </script>
+    ";
+
+}
+
 
 // echo ("Welcome " . $_SESSION['userId'] . "!");
 
@@ -74,10 +97,9 @@ if ($numExists > 0) {
             let insertTable = '<table border=1>';
         </script>
     ";
-    
+
 
     while ($row = $result->fetch_assoc()) {
-        // echo "Name: " . $row["name"] . " - Category: " . $row["category"] . " - Description: " . $row["description"] . " - Time: " . $row["time"] . " - Date: " . $row["date"] . " - Location: " . $row["location"] . " - Contact Phone: " . $row["contactPhone"] . " - Contact Email: " . $row["contactEmail"] . "<br>" . "<br>";
 
         echo "
             <script type=\"text/javascript\">
@@ -158,10 +180,9 @@ $conn->close();
         /* color: rgb(65 54 54); */
     }
 
-    .tables
-    {
-        width:100%;
-        height:100%;
+    .tables {
+        width: 100%;
+        height: 100%;
         table-layout: fixed;
         -moz-border-radius: 5px;
         -webkit-border-radius: 5px;
@@ -170,8 +191,7 @@ $conn->close();
         background-color: #A7B688;
     }
 
-    table
-    {
+    table {
         border: 1;
         background-color: #A7B688;
         
@@ -198,20 +218,19 @@ $conn->close();
 
     }
 
-    #contacts th 
-    {
+    #contacts th {
         border: .5px solid rgb(0, 0, 0);
         text-decoration: none;
         
     }
 
-    #contacts th 
-    {
+    #contacts th {
         padding: 20px 15px;
         font-family: 'Karla';
         font-size: 18px;
         font-weight: bold;
-        background-color: #9fad8f;;
+        background-color: #9fad8f;
+        ;
         text-transform: uppercase;
         width: 200px;
         text-align: center;

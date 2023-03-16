@@ -6,13 +6,23 @@
 </head>
 
 <body>
-    <h1>
-        Home Page
-    </h1>
-    <p>Click here to clean <a href="logout.php" tite="Logout">Session AKA log out.</p>
+
+    <div class="head-bar">
+        
+        <h1 class="event-header">Events</h1>
+        <span id="welcome-text"></span>
+        <!-- <p>Click here to clean <a href="logout.php" tite="Logout">Session AKA log out.</a></p> -->
+        
+        <button class="logout-btn"> 
+            <a href="logout.php" tite="Logout">Logout</a>
+        </button>
+    </div>
 
     <div class = "record-container"  style="overflow-y:auto">
                     <div class="tables">
+                        <div class="search-content">
+                            <input type="text" id="myInput" class="search-bar" onkeyup='tableSearch()' placeholder="Search for event...">
+                        </div>
                         <div class="content-table" id="contactsTable">
                             <table id="contacts">
                                 <thead>
@@ -22,6 +32,8 @@
                                         <th>Descritpion</th>
                                         <th>Time</th>
                                         <th>Date</th>
+                                        <th>Location</th>
+                                        <th>Contact</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableInformation"></tbody>
@@ -40,6 +52,15 @@ session_start();
 if (!$_SESSION['userId']) {
     header("Location: /DC_Project/login.php");
 }
+
+// echo ("Welcome " . $_SESSION['userId'] . "!");
+
+echo " 
+<script type=\"text/javascript\">
+    let temp = 'Welcome Back $_SESSION[userId]';
+    document.getElementById('welcome-text').innerText = temp;
+</script>
+";
 
 $sqlEvents = "SELECT * FROM Events WHERE category='public'";
 $result = $conn->query($sqlEvents);
@@ -62,12 +83,13 @@ if ($numExists > 0) {
             <script type=\"text/javascript\">
                 insertTable += '<tr>'
 
-                insertTable += '<td>\"$row[name]\"</td>';
-                insertTable += '<td>\"$row[category]\"</td>';
-                insertTable += '<td>\"$row[description]\"</td>';
-                insertTable += '<td>\"$row[time]\"</td>';
-                insertTable += '<td>\"$row[date]\"</td>';
-                
+                insertTable += '<td>$row[name]</td>';
+                insertTable += '<td>$row[category]</td>';
+                insertTable += '<td>$row[description]</td>';
+                insertTable += '<td>$row[time]</td>';
+                insertTable += '<td>$row[date]</td>';
+                insertTable += '<td>$row[location]</td>';
+                insertTable += '<td>$row[contactPhone] <br /> $row[contactEmail]</td>';
 
                 insertTable += '</tr>';
             
@@ -86,17 +108,50 @@ if ($numExists > 0) {
     echo "0 results";
 }
 
-echo ("Welcome " . $_SESSION['userId'] . "!");
+echo "<script type=\"text/javascript\">
+    function tableSearch() 
+    {
+        let input, filter, table, tr, td, txtValue;
+
+
+        input = document.getElementById('myInput');
+        filter = input.value.toUpperCase();
+        table = document.getElementById('contacts');
+        tr = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < tr.length; i++) 
+        {
+            td = tr[i].getElementsByTagName('td')[0];
+            if (td) 
+            {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) 
+                {
+                    tr[i].style.display = '';
+                } else 
+                {
+                    tr[i].style.display = 'none';
+                }
+            }
+        }
+    }
+    </script> ";
+
+
 $conn->close();
 ?>
 
 <style>
 
+    body    
+    {
+        background-color: white;
+    }
+
     .record-container
     {
         border-radius: 10px;
         height: 600px;
-        padding: 20px 0;
         margin: 30px 0;
         box-shadow: 0px 0px 3px 0px rgba(1, 0, 1, 1);
         -webkit-box-shadow: 0px 0px 2px 0px rgba(1, 0, 1, 1);
@@ -112,11 +167,14 @@ $conn->close();
         -webkit-border-radius: 5px;
         border-radius: 5px;
         border-radius: 10px;
+        background-color: #A7B688;
     }
 
     table
     {
         border: 1;
+        background-color: #A7B688;
+        
     }
 
     .content-table {
@@ -126,15 +184,25 @@ $conn->close();
         border-radius: 10px;
     }
 
+    #welcome-text
+    {
+        text-align: center;
+        padding-bottom: 10px;
+    }
 
     #contacts td
     {
         border: .5px solid rgb(0, 0, 0);
+        text-decoration: none;
+        text-align: center;
+
     }
 
     #contacts th 
     {
         border: .5px solid rgb(0, 0, 0);
+        text-decoration: none;
+        
     }
 
     #contacts th 
@@ -147,5 +215,75 @@ $conn->close();
         text-transform: uppercase;
         width: 200px;
         text-align: center;
-}
+
+    }
+
+    .head-bar
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .event-header
+    {
+        text-align: center;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    .logout-btn
+    {
+        width: 160px;
+        font-size: 15px;
+        font-weight: 500;
+        font-family: inherit;
+        padding: 10px;
+        border: 3px solid rgb(0, 0, 0);
+        border-radius: 25px;
+        color: #fff;
+        background-color: #eac3ce;
+        cursor: pointer;
+        opacity: 0.8;
+        transition: all 0.5s ease;
+        outline: none;
+        text-decoration: none;
+        
+    }
+
+    button:visited
+    {
+        text-decoration: none;
+    }
+
+    a
+    {
+        text-decoration: none;
+    }
+
+    a:visited
+    {
+        text-decoration: none;
+    }
+
+    .search-content
+    {
+        display: flex;
+        justify-content: center;
+        min-width: 150px;
+        padding-bottom: 20px;
+        padding-top: 10px;
+    }    
+
+    .search-bar
+    {
+        border: 1px #000;
+        border-radius: 5px;
+        height: 20px;
+        width: 200px;
+        padding: 5px 25x 5px 25px;
+        outline: 0;
+        background-color: #eac3ce;
+        text-align: center;
+    }
+
 </style>

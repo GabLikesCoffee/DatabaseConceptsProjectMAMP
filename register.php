@@ -1,48 +1,3 @@
-<?php
-
-include 'connect.php';
-if (
-    isset($_POST['submit']) && !empty($_POST['userId'])
-    && !empty($_POST['password']) && !empty($_POST['email']) && !empty($_POST['university'])
-) {
-    $userId = $_POST['userId'];
-    $password = $_POST['password'];
-    $email = $_POST['email'];
-    $university = $_POST['university'];
-
-    $sql = "INSERT INTO Users (userId, password, userLevel, university, email) 
-    VALUES ('$userId', '$password', 'student', '$university', '$email')";
-
-    $sqlUserIDExists = "SELECT * FROM Users WHERE userId='$userId'";
-    $sqlUniExist = "SELECT * FROM Universities WHERE name='$university'";
-
-    $result = $conn->query($sqlUserIDExists);
-    $numIDExists = $result->num_rows;
-
-    $result2 = $conn->query($sqlUniExist);
-    $numUniExists = $result2->num_rows;
-
-    if ($numIDExists == 0) {
-        echo "Good userId";
-        if ($numUniExists > 0) {
-            if ($conn->query($sql) === TRUE) {
-                echo "New record created successfully. Select the log in button to proceed.";
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-        } else {
-            echo "University does not exist";
-        }
-    } else {
-        echo "bad userId";
-    }
-    $conn->close();
-}
-
-?>
-
-
-
 <html>
 
 <head>
@@ -72,6 +27,7 @@ if (
 
             <input type="text" name="university" class="form-control" placeholder="University"></input>
             <br />
+            <div id="uniSelect">hi</div>
 
             <div class="btn-div">
                 <button name="submit" type="submit">Register</button>
@@ -87,61 +43,139 @@ if (
 
 </html>
 
+
+
+
+
+<?php
+
+include 'connect.php';
+
+$sqlEvents = "SELECT * FROM Universities";
+$result = $conn->query($sqlEvents);
+$numExists = $result->num_rows;
+if ($numExists > 0) {
+
+    echo " 
+        <script type=\"text/javascript\">
+            let insertSelect = '<select name=\"universitiySelect\" id=\"universitySelect\">';
+        </script>
+    ";
+
+    while ($row = $result->fetch_assoc()) {
+        echo $row['name'];
+        echo " 
+        <script type=\"text/javascript\">
+            insertSelect += '<option value=\"$row[name]\">$row[name]</option>';
+        </script>
+        ";
+    }
+    echo "
+    <script type=\"text/javascript\">
+        insertSelect += '</select>';
+        document.getElementById('uniSelect').innerHTML = insertSelect;
+        console.log(insertSelect);
+    </script>
+    ";
+}
+
+
+if (
+    isset($_POST['submit']) && !empty($_POST['userId'])
+    && !empty($_POST['password']) && !empty($_POST['email']) && !empty($_POST['university'])
+) {
+    $userId = $_POST['userId'];
+    $password = $_POST['password'];
+    $email = $_POST['email'];
+    $university = $_POST['university'];
+
+    $sql = "INSERT INTO Users (userId, password, userLevel, university, email) 
+    VALUES ('$userId', '$password', 'student', '$university', '$email')";
+
+    $sqlUserIDExists = "SELECT * FROM Users WHERE userId='$userId'";
+    $sqlUniExist = "SELECT * FROM Universities WHERE name='$university'";
+
+    $result = $conn->query($sqlUserIDExists);
+    $numIDExists = $result->num_rows;
+
+    $result2 = $conn->query($sqlUniExist);
+    $numUniExists = $result2->num_rows;
+
+
+    if ($numIDExists == 0) {
+        echo "Good userId";
+        if ($numUniExists > 0) {
+            if ($conn->query($sql) === TRUE) {
+                echo "New record created successfully. Select the log in button to proceed.";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        } else {
+            echo "University does not exist";
+        }
+    } else {
+        echo "bad userId";
+    }
+    $conn->close();
+}
+
+?>
+
 <style>
-body {
-    background-color: #36454F;
-    margin-bottom: 200px;
-}
+    body {
+        background-color: #36454F;
+        margin-bottom: 200px;
+    }
 
-h1 {
-    font-size: 65px;
-    color: white;
-    text-align: center;
-}
+    h1 {
+        font-size: 65px;
+        color: white;
+        text-align: center;
+    }
 
-.btn-div {
-    font-size: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    .btn-div {
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-button {
-    background-color: #E9D3FF;
-    height: 40px;
-    width: 300px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: opacity 0.35, color 0.35s;
-    box-shadow: 5px 5px 10px black(0, 0, 0, .15);
-    transition: box-shadow 0.15s;
-    transition: background-color 0.15s;
-    text-align: center;
-}
+    button {
+        background-color: #E9D3FF;
+        height: 40px;
+        width: 300px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: opacity 0.35, color 0.35s;
+        box-shadow: 5px 5px 10px black(0, 0, 0, .15);
+        transition: box-shadow 0.15s;
+        transition: background-color 0.15s;
+        text-align: center;
+    }
 
-button:hover {
-    background-color: rgb(255, 255, 255);
-}
+    button:hover {
+        background-color: rgb(255, 255, 255);
+    }
 
-form {
-    align-items: center;
-    width: 250px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    form {
+        align-items: center;
+        width: 250px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-.form-control {
-    color: black;
-    font-size: 20px;
-    text-align: left;
-    border: none;
-    border-radius: 6px;
-    height: 40px;
-    width: 300px;
-    padding-bottom: 5px;
-    background-color: grey;
-}
+    .form-control {
+        color: black;
+        font-size: 20px;
+        text-align: left;
+        border: none;
+        border-radius: 6px;
+        height: 40px;
+        width: 300px;
+        padding-bottom: 5px;
+        background-color: grey;
+    }
 </style>

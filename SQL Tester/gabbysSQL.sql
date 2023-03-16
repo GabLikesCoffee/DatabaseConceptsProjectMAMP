@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 16, 2023 at 06:05 AM
+-- Generation Time: Mar 16, 2023 at 07:12 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -67,7 +67,8 @@ CREATE TABLE `Universities` (
 --
 
 INSERT INTO `Universities` (`name`, `acronym`, `location`, `description`, `numberOfStudents`) VALUES
-('university of central florida', 'ucf', '4000 central florida blvd, orlando, fl 32816', 'UCF is the best school ever created! Professor Vu is the best professor at UCF!', 2);
+('university of central florida', 'ucf', '4000 central florida blvd, orlando, fl 32816', 'UCF is the best school ever created! Professor Vu is the best professor at UCF!', 3),
+('florida international university', 'fiu', 'Miami I think idk', 'I took ios class here', NULL);
 
 -- --------------------------------------------------------
 
@@ -96,7 +97,8 @@ INSERT INTO `Users` (`userId`, `password`, `userLevel`, `university`, `email`) V
 ('Alice', 'wonderland', 'student', NULL, NULL),
 ('gghghgh', 'ddddddddd', 'student', NULL, NULL),
 ('gabbys', 'cookie', 'student', 'university of central florida', 'gabisgr8@gmail.com'),
-('gabbers', 'gabbers', 'student', 'University of central florida', 'gabisgr8@yahoo.com');
+('gabbers', 'gabbers', 'student', 'University of central florida', 'gabisgr8@yahoo.com'),
+('gabbers1', 'ssss', 'student', 'university of central florida', 'gab@gab.com');
 
 --
 -- Triggers `Users`

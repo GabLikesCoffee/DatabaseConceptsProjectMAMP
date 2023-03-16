@@ -7,21 +7,22 @@
 <body>
 
     <div class="head-bar">
-        
+
         <h1 class="event-header">Events</h1>
         <span id="welcome-text"></span>
         <!-- <p>Click here to clean <a href="logout.php" tite="Logout">Session AKA log out.</a></p> -->
-        
-        <button class="logout-btn"> 
+
+        <button class="logout-btn">
             <a href="logout.php" tite="Logout">Logout</a>
         </button>
     </div>
 
     <div class="record-container" style="overflow-y:auto">
         <div class="tables">
-                        <div class="search-content">
-                            <input type="text" id="myInput" class="search-bar" onkeyup='tableSearch()' placeholder="Search for event...">
-                        </div>
+            <div class="search-content">
+                <input type="text" id="myInput" class="search-bar" onkeyup='tableSearch()'
+                    placeholder="Search for event...">
+            </div>
             <div class="content-table" id="contactsTable">
                 <table id="contacts">
                     <thead>
@@ -68,15 +69,13 @@ if ($item) {
 if ($userLevel == "admin") {
     echo " 
         <script type=\"text/javascript\">
-            let insertButton = '<a href=approveEvents.php><button>Approve Events</button></a>';
-            document.getElementById('approveEventBtnDiv').innerHTML = insertButton;
+            let insertButtons = '<a href=approveEvents.php><button>Approve Events</button></a><br />';
+            insertButtons += '<a href=createEvents.php><button>Create Events</button></a>';
+            document.getElementById('approveEventBtnDiv').innerHTML = insertButtons;
         </script>
     ";
 
 }
-
-
-// echo ("Welcome " . $_SESSION['userId'] . "!");
 
 echo " 
 <script type=\"text/javascript\">
@@ -164,14 +163,11 @@ $conn->close();
 ?>
 
 <style>
-
-    body    
-    {
+    body {
         background-color: white;
     }
 
-    .record-container
-    {
+    .record-container {
         border-radius: 10px;
         height: 600px;
         margin: 30px 0;
@@ -194,7 +190,7 @@ $conn->close();
     table {
         border: 1;
         background-color: #A7B688;
-        
+
     }
 
     .content-table {
@@ -204,14 +200,12 @@ $conn->close();
         border-radius: 10px;
     }
 
-    #welcome-text
-    {
+    #welcome-text {
         text-align: center;
         padding-bottom: 10px;
     }
 
-    #contacts td
-    {
+    #contacts td {
         border: .5px solid rgb(0, 0, 0);
         text-decoration: none;
         text-align: center;
@@ -221,7 +215,7 @@ $conn->close();
     #contacts th {
         border: .5px solid rgb(0, 0, 0);
         text-decoration: none;
-        
+
     }
 
     #contacts th {
@@ -237,21 +231,18 @@ $conn->close();
 
     }
 
-    .head-bar
-    {
+    .head-bar {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    .event-header
-    {
+    .event-header {
         text-align: center;
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     }
 
-    .logout-btn
-    {
+    .logout-btn {
         width: 160px;
         font-size: 15px;
         font-weight: 500;
@@ -266,35 +257,30 @@ $conn->close();
         transition: all 0.5s ease;
         outline: none;
         text-decoration: none;
-        
+
     }
 
-    button:visited
-    {
+    button:visited {
         text-decoration: none;
     }
 
-    a
-    {
+    a {
         text-decoration: none;
     }
 
-    a:visited
-    {
+    a:visited {
         text-decoration: none;
     }
 
-    .search-content
-    {
+    .search-content {
         display: flex;
         justify-content: center;
         min-width: 150px;
         padding-bottom: 20px;
         padding-top: 10px;
-    }    
+    }
 
-    .search-bar
-    {
+    .search-bar {
         border: 1px #000;
         border-radius: 5px;
         height: 20px;
@@ -304,5 +290,4 @@ $conn->close();
         background-color: #eac3ce;
         text-align: center;
     }
-
 </style>

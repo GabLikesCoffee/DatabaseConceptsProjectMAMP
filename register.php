@@ -24,13 +24,10 @@
 
             <input type="email" name="email" class="form-control" placeholder="Email"></input>
             <br />
-
-            <input type="text" name="university" class="form-control" placeholder="University"></input>
-            <br />
             <div id="uniSelect">hi</div>
 
             <div class="btn-div">
-                <button name="submit" type="submit">Register</button>
+                <button name="submit">Register</button>
                 <br />
             </div>
 
@@ -58,12 +55,11 @@ if ($numExists > 0) {
 
     echo " 
         <script type=\"text/javascript\">
-            let insertSelect = '<select name=\"universitiySelect\" id=\"universitySelect\">';
+            let insertSelect = '<select name=\"university\" id=\"universitySelect\">';
         </script>
     ";
 
     while ($row = $result->fetch_assoc()) {
-        echo $row['name'];
         echo " 
         <script type=\"text/javascript\">
             insertSelect += '<option value=\"$row[name]\">$row[name]</option>';
@@ -74,11 +70,9 @@ if ($numExists > 0) {
     <script type=\"text/javascript\">
         insertSelect += '</select>';
         document.getElementById('uniSelect').innerHTML = insertSelect;
-        console.log(insertSelect);
     </script>
     ";
 }
-
 
 if (
     isset($_POST['submit']) && !empty($_POST['userId'])

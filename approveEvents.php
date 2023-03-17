@@ -53,7 +53,7 @@ if ($userLevel != "admin") {
 }
 echo ("Welcome " . $_SESSION['userId'] . "!");
 
-$sqlEvents = "SELECT * FROM Events WHERE approved='no' AND category ='public'";
+$sqlEvents = "SELECT * FROM Events WHERE approved='no'";
 
 $result = $conn->query($sqlEvents);
 $numExists = $result->num_rows;
@@ -101,55 +101,55 @@ $conn->close();
 ?>
 
 <style>
-.record-container {
-    border-radius: 10px;
-    height: 600px;
-    padding: 20px 0;
-    margin: 30px 0;
-    box-shadow: 0px 0px 3px 0px rgba(1, 0, 1, 1);
-    -webkit-box-shadow: 0px 0px 2px 0px rgba(1, 0, 1, 1);
-    /* color: rgb(65 54 54); */
-}
+    .record-container {
+        border-radius: 10px;
+        height: 600px;
+        padding: 20px 0;
+        margin: 30px 0;
+        box-shadow: 0px 0px 3px 0px rgba(1, 0, 1, 1);
+        -webkit-box-shadow: 0px 0px 2px 0px rgba(1, 0, 1, 1);
+        /* color: rgb(65 54 54); */
+    }
 
-.tables {
-    width: 100%;
-    height: 100%;
-    table-layout: fixed;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    border-radius: 10px;
-}
+    .tables {
+        width: 100%;
+        height: 100%;
+        table-layout: fixed;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        border-radius: 10px;
+    }
 
-table {
-    border: 1;
-}
+    table {
+        border: 1;
+    }
 
-.content-table {
-    height: 460px;
-    overflow-x: auto;
-    margin-top: 0px;
-    border-radius: 10px;
-}
+    .content-table {
+        height: 460px;
+        overflow-x: auto;
+        margin-top: 0px;
+        border-radius: 10px;
+    }
 
 
-#contacts td {
-    border: .5px solid rgb(0, 0, 0);
-}
+    #contacts td {
+        border: .5px solid rgb(0, 0, 0);
+    }
 
-#contacts th {
-    border: .5px solid rgb(0, 0, 0);
-}
+    #contacts th {
+        border: .5px solid rgb(0, 0, 0);
+    }
 
-#contacts th {
-    padding: 20px 15px;
-    font-family: 'Karla';
-    font-size: 18px;
-    font-weight: bold;
-    background-color: #9fad8f;
-    ;
-    text-transform: uppercase;
-    width: 200px;
-    text-align: center;
-}
+    #contacts th {
+        padding: 20px 15px;
+        font-family: 'Karla';
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #9fad8f;
+        ;
+        text-transform: uppercase;
+        width: 200px;
+        text-align: center;
+    }
 </style>

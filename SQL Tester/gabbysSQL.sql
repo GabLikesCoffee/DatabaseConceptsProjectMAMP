@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 17, 2023 at 02:20 AM
+-- Generation Time: Mar 17, 2023 at 10:03 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -55,6 +55,54 @@ INSERT INTO `Events` (`name`, `category`, `description`, `time`, `location`, `co
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `RSO`
+--
+
+CREATE TABLE `RSO` (
+  `name` char(150) NOT NULL,
+  `numberOfMembers` int(11) NOT NULL DEFAULT '0',
+  `university` char(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `RSO`
+--
+
+INSERT INTO `RSO` (`name`, `numberOfMembers`, `university`) VALUES
+('RSO for UCF', 0, 'university of central florida');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `RSOJoinRequest`
+--
+
+CREATE TABLE `RSOJoinRequest` (
+  `RSOname` char(150) NOT NULL,
+  `userId` char(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `RSOJoinRequest`
+--
+
+INSERT INTO `RSOJoinRequest` (`RSOname`, `userId`) VALUES
+('RSO for UCF', 'gabby');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `RSOmembers`
+--
+
+CREATE TABLE `RSOmembers` (
+  `RSOname` char(150) NOT NULL,
+  `userId` char(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `Universities`
 --
 
@@ -71,7 +119,7 @@ CREATE TABLE `Universities` (
 --
 
 INSERT INTO `Universities` (`name`, `acronym`, `location`, `description`, `numberOfStudents`) VALUES
-('university of central florida', 'ucf', '4000 central florida blvd, orlando, fl 32816', 'UCF is the best school ever created! Professor Vu is the best professor at UCF!', 3),
+('university of central florida', 'ucf', '4000 central florida blvd, orlando, fl 32816', 'UCF is the best school ever created! Professor Vu is the best professor at UCF!', 4),
 ('florida international university', 'fiu', 'Miami I think idk', 'I took ios class here', NULL);
 
 -- --------------------------------------------------------
@@ -104,7 +152,8 @@ INSERT INTO `Users` (`userId`, `password`, `userLevel`, `university`, `email`) V
 ('gabbers', 'gabbers', 'student', 'University of central florida', 'gabisgr8@yahoo.com'),
 ('gabbers1', 'ssss', 'student', 'university of central florida', 'gab@gab.com'),
 ('gabchalk', 'cgabchalk', 'student', 'florida international university', 'chalk@chalk.com'),
-('gabbyfiu', 'cookie', 'student', 'florida international university', 'gabisgr8@fiu.edu');
+('gabbyfiu', 'cookie', 'student', 'florida international university', 'gabisgr8@fiu.edu'),
+('a', 'a', 'student', 'university of central florida', 'a@a');
 
 --
 -- Triggers `Users`

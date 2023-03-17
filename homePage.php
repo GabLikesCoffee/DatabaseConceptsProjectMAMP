@@ -42,6 +42,7 @@
         </div>
     </div>
     <div id="approveEventBtnDiv"></div>
+    <a href="joinRso.php"><button>Join an RSO!</button></a>
 </body>
 
 </html>

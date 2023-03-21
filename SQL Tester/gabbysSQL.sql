@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 17, 2023 at 10:03 PM
+-- Generation Time: Mar 21, 2023 at 03:41 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -69,7 +69,9 @@ CREATE TABLE `RSO` (
 --
 
 INSERT INTO `RSO` (`name`, `numberOfMembers`, `university`) VALUES
-('RSO for UCF', 0, 'university of central florida');
+('big rso', 6, 'florida international university'),
+('RSO for FIU', 1, 'florida international university'),
+('RSO for UCF', 1, 'university of central florida');
 
 -- --------------------------------------------------------
 
@@ -87,6 +89,7 @@ CREATE TABLE `RSOJoinRequest` (
 --
 
 INSERT INTO `RSOJoinRequest` (`RSOname`, `userId`) VALUES
+('RSO for FIU', 'gabbyfiu'),
 ('RSO for UCF', 'gabby');
 
 -- --------------------------------------------------------
@@ -99,6 +102,27 @@ CREATE TABLE `RSOmembers` (
   `RSOname` char(150) NOT NULL,
   `userId` char(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `RSOmembers`
+--
+
+INSERT INTO `RSOmembers` (`RSOname`, `userId`) VALUES
+('RSO for UCF', 'gabby'),
+('RSO for FIU', 'gabby'),
+('awda', 'gabby'),
+('RSO for FIU', 'gabby'),
+('RSO for UCF', 'gabby');
+
+--
+-- Triggers `RSOmembers`
+--
+DELIMITER $$
+CREATE TRIGGER `Update_RSO_member_count` AFTER INSERT ON `RSOmembers` FOR EACH ROW UPDATE RSO R
+SET R.numberOfMembers = R.numberOfMembers+1
+WHERE R.name = new.RSOname
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -174,6 +198,18 @@ DELIMITER ;
 --
 ALTER TABLE `Events`
   ADD PRIMARY KEY (`name`);
+
+--
+-- Indexes for table `RSO`
+--
+ALTER TABLE `RSO`
+  ADD PRIMARY KEY (`name`,`university`);
+
+--
+-- Indexes for table `RSOJoinRequest`
+--
+ALTER TABLE `RSOJoinRequest`
+  ADD PRIMARY KEY (`RSOname`,`userId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

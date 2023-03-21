@@ -43,6 +43,7 @@
     </div>
     <div id="approveEventBtnDiv"></div>
     <a href="joinRso.php"><button>Join an RSO!</button></a>
+    <a href="createRso.php"><button>Create an RSO!</button></a>
 </body>
 
 </html>

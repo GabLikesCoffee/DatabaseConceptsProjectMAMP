@@ -15,6 +15,10 @@
         <div id="rsoNameSelect">
             No RSOs for you to join right now!
         </div>
+        <h3>Pending RSOs. They need more members to be official. Join Now!</h3>
+        <div id="rsoPendingNameSelect">
+            No RSOs for you to join right now!
+        </div>
         <button class="btn btn-primary" name="submit">Request to join RSO</button>
 
     </form>
@@ -36,7 +40,7 @@ if (!$_SESSION['userId']) {
 $userId = $_SESSION['userId'];
 
 
-$sqlRSOs = "SELECT R.name from Users U, RSO R WHERE R.university=U.university AND U.userId = '$userId'";
+$sqlRSOs = "SELECT R.name, R.numberOfMembers from Users U, RSO R WHERE R.university=U.university AND U.userId = '$userId'";
 $result = $conn->query($sqlRSOs);
 $numExists = $result->num_rows;
 if ($numExists > 0) {
@@ -44,36 +48,61 @@ if ($numExists > 0) {
     echo " 
         <script type=\"text/javascript\">
             let insertSelect = '<select class=\"form-select\" name=\"name\">';
+            let pendingSelect = '<select class=\"form-select\" name=\"pendingName\">';
+            insertSelect += '<option selected>Select</option>';
+            pendingSelect += '<option selected selected>Select</option>';
         </script>
     ";
 
     while ($row = $result->fetch_assoc()) {
         echo " 
         <script type=\"text/javascript\">
-            insertSelect += '<option value=\"$row[name]\">$row[name]</option>';
+            if($row[numberOfMembers] < 4){
+                pendingSelect += '<option value=\"$row[name]\">$row[name]</option>';
+            }
+            else{
+                insertSelect += '<option value=\"$row[name]\">$row[name]</option>';
+            }
         </script>
         ";
     }
     echo "
     <script type=\"text/javascript\">
         insertSelect += '</select>';
+        pendingSelect += '</select>';
         document.getElementById('rsoNameSelect').innerHTML = insertSelect;
+        document.getElementById('rsoPendingNameSelect').innerHTML = pendingSelect;
     </script>
     ";
 }
 
 if (
-    isset($_POST['submit']) && !empty($_POST['name'])
+    isset($_POST['submit']) && !empty($_POST['name']) && !empty($_POST['pendingName'])
 ) {
     $rsoname = $_POST['name'];
-
-    $sql = "INSERT INTO RSOJoinRequest (RSOname, userId) 
+    $pendingRsoName = $_POST['pendingName'];
+    if ($rsoname != "Select") {
+        $sql = "INSERT INTO RSOJoinRequest (RSOname, userId) 
 VALUES ('$rsoname', '$userId')";
-    if ($conn->query($sql) === TRUE) {
-        echo "RSO join request has been sent!";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        if ($conn->query($sql) === TRUE) {
+            echo "RSO join request has been sent!";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     }
+    if ($pendingRsoName != "Select") {
+        $sql2 = "INSERT INTO RSOJoinRequest (RSOname, userId) 
+VALUES ('$pendingRsoName', '$userId')";
+        if ($conn->query($sql2) === TRUE) {
+            echo "RSO join request has been sent!";
+        } else {
+            echo "Error: " . $sql2 . "<br>" . $conn->error;
+        }
+    }
+
+
+} else {
+    echo "a field is empty";
 }
 $conn->close();
 ?>

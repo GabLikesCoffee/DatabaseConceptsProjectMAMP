@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 24, 2023 at 05:32 PM
+-- Generation Time: Mar 24, 2023 at 05:43 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -100,9 +100,9 @@ CREATE TABLE `RSOmembers` (
 --
 
 INSERT INTO `RSOmembers` (`RSOname`, `userId`) VALUES
+('RSO for FIU', 'gabbyfiu'),
 ('RSO for FIU', 'gabchalk'),
-('RSO for FIU2', 'gabbyfiu'),
-('RSO for FIU', 'gabbyfiu');
+('RSO for FIU2', 'gabbyfiu');
 
 --
 -- Triggers `RSOmembers`
@@ -193,6 +193,12 @@ ALTER TABLE `RSO`
 -- Indexes for table `RSOJoinRequest`
 --
 ALTER TABLE `RSOJoinRequest`
+  ADD PRIMARY KEY (`RSOname`,`userId`);
+
+--
+-- Indexes for table `RSOmembers`
+--
+ALTER TABLE `RSOmembers`
   ADD PRIMARY KEY (`RSOname`,`userId`);
 COMMIT;
 

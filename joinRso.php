@@ -40,7 +40,7 @@ if (!$_SESSION['userId']) {
 $userId = $_SESSION['userId'];
 
 
-$sqlRSOs = "SELECT R.name, R.numberOfMembers from Users U, RSO R WHERE R.university=U.university AND U.userId = '$userId'";
+$sqlRSOs = "SELECT R.name, R.numberOfMembers from Users U, RSO R, RSOmembers RM WHERE R.university=U.university AND U.userId = '$userId' AND RM.RSOname = R.name AND RM.userId != '$userId'";
 $result = $conn->query($sqlRSOs);
 $numExists = $result->num_rows;
 if ($numExists > 0) {

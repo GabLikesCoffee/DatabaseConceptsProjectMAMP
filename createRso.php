@@ -68,19 +68,18 @@ if (isset($_POST['submit']) && !empty($_POST['rsoName']) && !empty($_POST['unive
     $university = $_POST['university'];
 
 
-    $sql = "INSERT INTO `RSO`(`name`, `numberOfMembers`, `university`) VALUES ('$rsoname', 0,'$university')";
+    $sql = "INSERT INTO `RSO`(`name`, `numberOfMembers`, `university`, `creator`) VALUES ('$rsoname', 0,'$university', '$userId')";
     $sql2 = "INSERT INTO `RSOmembers`(`RSOname`, `userId`) VALUES ('$rsoname', '$userId')";
     if ($conn->query($sql) === TRUE) {
         echo "RSO has been created!";
+        if ($conn->query($sql2) === TRUE) {
+            echo "Added as a member of the new RSO!";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
-    if ($conn->query($sql2) === TRUE) {
-        echo "Added as a member of the new RSO!";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-
 }
 $conn->close();
 ?>

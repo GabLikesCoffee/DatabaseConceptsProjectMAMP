@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 21, 2023 at 03:41 PM
+-- Generation Time: Mar 24, 2023 at 05:32 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -61,17 +61,17 @@ INSERT INTO `Events` (`name`, `category`, `description`, `time`, `location`, `co
 CREATE TABLE `RSO` (
   `name` char(150) NOT NULL,
   `numberOfMembers` int(11) NOT NULL DEFAULT '0',
-  `university` char(40) NOT NULL
+  `university` char(40) NOT NULL,
+  `creator` char(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `RSO`
 --
 
-INSERT INTO `RSO` (`name`, `numberOfMembers`, `university`) VALUES
-('big rso', 6, 'florida international university'),
-('RSO for FIU', 1, 'florida international university'),
-('RSO for UCF', 1, 'university of central florida');
+INSERT INTO `RSO` (`name`, `numberOfMembers`, `university`, `creator`) VALUES
+('RSO for FIU', 2, 'florida international university', 'gabchalk'),
+('RSO for FIU2', 1, 'florida international university', 'gabbyfiu');
 
 -- --------------------------------------------------------
 
@@ -83,14 +83,6 @@ CREATE TABLE `RSOJoinRequest` (
   `RSOname` char(150) NOT NULL,
   `userId` char(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `RSOJoinRequest`
---
-
-INSERT INTO `RSOJoinRequest` (`RSOname`, `userId`) VALUES
-('RSO for FIU', 'gabbyfiu'),
-('RSO for UCF', 'gabby');
 
 -- --------------------------------------------------------
 
@@ -108,11 +100,9 @@ CREATE TABLE `RSOmembers` (
 --
 
 INSERT INTO `RSOmembers` (`RSOname`, `userId`) VALUES
-('RSO for UCF', 'gabby'),
-('RSO for FIU', 'gabby'),
-('awda', 'gabby'),
-('RSO for FIU', 'gabby'),
-('RSO for UCF', 'gabby');
+('RSO for FIU', 'gabchalk'),
+('RSO for FIU2', 'gabbyfiu'),
+('RSO for FIU', 'gabbyfiu');
 
 --
 -- Triggers `RSOmembers`
@@ -165,13 +155,7 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`userId`, `password`, `userLevel`, `university`, `email`) VALUES
-('gabbySan', 'giraffe', 'student', NULL, NULL),
 ('gabby', 'cookie', 'admin', 'university of central florida', NULL),
-('ooga', 'booga', 'student', NULL, NULL),
-('yoyo', 'yoyoyo', 'student', NULL, NULL),
-('homeAlone', 'kid', 'student', NULL, NULL),
-('Alice', 'wonderland', 'student', NULL, NULL),
-('gghghgh', 'ddddddddd', 'student', NULL, NULL),
 ('gabbys', 'cookie', 'student', 'university of central florida', 'gabisgr8@gmail.com'),
 ('gabbers', 'gabbers', 'student', 'University of central florida', 'gabisgr8@yahoo.com'),
 ('gabbers1', 'ssss', 'student', 'university of central florida', 'gab@gab.com'),

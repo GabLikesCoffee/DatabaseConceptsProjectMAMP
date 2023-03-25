@@ -1,3 +1,17 @@
+<script>
+function checkRSO() {
+    let cat = document.getElementById('category');
+    let rsoSelect = document.getElementById('rsoNameSelect');
+    if (cat.value == 'RSO') {
+        if (rsoSelect.getAttribute("hidden") !== null) {
+            rsoSelect.removeAttribute("hidden");
+        }
+    } else {
+        rsoSelect.setAttribute("hidden", true);
+    }
+}
+</script>
+
 <html>
 
 <head>
@@ -15,10 +29,15 @@
 
         <input required type="text" name="name" class="form-control" placeholder="Event Name"></input>
 
-        <select class="form-select" name="category">
+        <select class="form-select" name="category" onchange="checkRSO()" id='category'>
             <option selected value="public">public</option>
             <option value="private">private</option>
+            <option value="RSO">RSO</option>
         </select>
+
+        <div id="rsoNameSelect" hidden>
+            No RSOs!
+        </div>
 
         <input required type="textarea" name="description" class="form-control" placeholder="Description"></input>
 
@@ -52,6 +71,34 @@ session_start();
 //Checks that the user is logged in. If not, redirect to the login screen.
 if (!$_SESSION['userId']) {
     header("Location: /DC_Project/login.php");
+}
+$userId = $_SESSION['userId'];
+
+$sqlRSOs = "SELECT R.name from RSO R, RSOmembers RM WHERE RM.userId='$userId' AND RM.RSOname = R.name AND R.creator = '$userId'";
+$result = $conn->query($sqlRSOs);
+$numExists = $result->num_rows;
+if ($numExists > 0) {
+
+    echo " 
+        <script type=\"text/javascript\">
+            let insertSelect2 = '<select class=\"form-select\" name=\"rsoname\">';
+            insertSelect2 += '<option selected>Select</option>';
+        </script>
+    ";
+
+    while ($row = $result->fetch_assoc()) {
+        echo " 
+        <script type=\"text/javascript\">
+                insertSelect2 += '<option value=\"$row[name]\">$row[name]</option>';
+        </script>
+        ";
+    }
+    echo "
+    <script type=\"text/javascript\">
+        insertSelect2 += '</select>';
+        document.getElementById('rsoNameSelect').innerHTML = insertSelect2;
+    </script>
+    ";
 }
 
 
@@ -93,13 +140,29 @@ if (
     $contactPhone = $_POST['contactPhone'];
     $contactEmail = $_POST['contactEmail'];
     $university = $_POST['university'];
+    $university = $_POST['university'];
 
-    $sql = "INSERT INTO Events (name, category, description, time, date, location, contactPhone, contactEmail, approved, university) 
-VALUES ('$name', '$category','$description','$time','$date','$location','$contactPhone','$contactEmail', 'no', '$university')";
-    if ($conn->query($sql) === TRUE) {
-        echo "New event created successfully!";
+    if ($category != 'RSO') {
+        $sql = "INSERT INTO Events (name, category, description, time, date, location, contactPhone, contactEmail, approved, university) 
+    VALUES ('$name', '$category','$description','$time','$date','$location','$contactPhone','$contactEmail', 'no', '$university')";
+        if ($conn->query($sql) === TRUE) {
+            echo "New event created successfully!";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        if (!empty($_POST['rsoname'])) {
+            $rsoname = $_POST['rsoname'];
+            $sql = "INSERT INTO Events (name, category, description, time, date, location, contactPhone, contactEmail, approved, university, RSOname) 
+    VALUES ('$name', '$category','$description','$time','$date','$location','$contactPhone','$contactEmail', 'yes', '$university', '$rsoname')";
+            if ($conn->query($sql) === TRUE) {
+                echo "New event created successfully!";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        } else {
+            echo "Please fill out the RSO name!";
+        }
     }
 }
 $conn->close();

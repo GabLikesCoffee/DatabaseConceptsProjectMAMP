@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 25, 2023 at 07:43 PM
+-- Generation Time: Mar 25, 2023 at 08:22 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -37,20 +37,22 @@ CREATE TABLE `Events` (
   `approved` char(10) DEFAULT 'no',
   `university` char(40) DEFAULT NULL,
   `date` char(15) DEFAULT NULL,
-  `contactPhone` char(15) DEFAULT NULL
+  `contactPhone` char(15) DEFAULT NULL,
+  `RSOname` char(40) DEFAULT 'none'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `Events`
 --
 
-INSERT INTO `Events` (`name`, `category`, `description`, `time`, `location`, `contactEmail`, `approved`, `university`, `date`, `contactPhone`) VALUES
-('Applebees Meeting', 'public', 'I do not like applebees but their quesadilla burger is good lol', '10:30pm', 'Applebees', 'this@this.com', 'no', NULL, NULL, NULL),
-('Chess Night', 'public', 'Chess night is exactly what you think it is! Gather around with others to play chess to your hearts content! Snacks and drinks will be provided!', '1:00AM', 'The White House', 'chess@chess.com', 'no', NULL, NULL, NULL),
-('Coconut Appreciation Event', 'public', 'This is an event where one and all will come together to appreciate coconuts! This event is formal attire, so please dress up!', '2:00am-5:00am', 'Hawaii', 'email@email.com', 'yes', 'university of central florida', '2023-03-08', '123123123'),
-('DJ Night', 'public', 'Music is fun. DJs are fun! Spend a night of musical dancy fun at this event!', '4:00am', 'Student Union', 'email@email.com', 'yes', NULL, NULL, NULL),
-('ios Class Registration', 'private', 'I dunno much about fiu except they offer that one ios course. Now you can register there!', '3:00am', 'Miami?', 'fiu@fiu.com', 'no', 'florida international university', '2023-03-21', '123123123'),
-('Knights Apple Bobbing', 'private', 'Are you even a Knight if you dont bob for apples?? Yes its kinda gross we know, but charge onnnnnnnn!!!!', '3:00am', 'Joes Crab Shack', '11037@email.com', 'no', 'university of central florida', '2022-10-31', '11037');
+INSERT INTO `Events` (`name`, `category`, `description`, `time`, `location`, `contactEmail`, `approved`, `university`, `date`, `contactPhone`, `RSOname`) VALUES
+('Applebees Meeting', 'public', 'I do not like applebees but their quesadilla burger is good lol', '10:30pm', 'Applebees', 'this@this.com', 'yes', NULL, NULL, NULL, 'none'),
+('Chess Night', 'public', 'Chess night is exactly what you think it is! Gather around with others to play chess to your hearts content! Snacks and drinks will be provided!', '1:00AM', 'The White House', 'chess@chess.com', 'no', NULL, NULL, NULL, 'none'),
+('Coconut Appreciation Event', 'public', 'This is an event where one and all will come together to appreciate coconuts! This event is formal attire, so please dress up!', '2:00am-5:00am', 'Hawaii', 'email@email.com', 'yes', 'university of central florida', '2023-03-08', '123123123', 'none'),
+('DJ Night', 'public', 'Music is fun. DJs are fun! Spend a night of musical dancy fun at this event!', '4:00am', 'Student Union', 'email@email.com', 'yes', NULL, NULL, NULL, 'none'),
+('ios Class Registration', 'private', 'I dunno much about fiu except they offer that one ios course. Now you can register there!', '3:00am', 'Miami?', 'fiu@fiu.com', 'no', 'florida international university', '2023-03-21', '123123123', 'none'),
+('Knights Apple Bobbing', 'private', 'Are you even a Knight if you dont bob for apples?? Yes its kinda gross we know, but charge onnnnnnnn!!!!', '3:00am', 'Joes Crab Shack', '11037@email.com', 'no', 'university of central florida', '2022-10-31', '11037', 'none'),
+('RSO event', 'RSO', 'this is my rso for ucf event!', '1:30pm', 'location', 'gab@gab.com', 'yes', 'university of central florida', '2023-03-25', '123123', 'rso for ucf');
 
 -- --------------------------------------------------------
 
@@ -73,7 +75,7 @@ INSERT INTO `RSO` (`name`, `numberOfMembers`, `university`, `creator`) VALUES
 ('RSO for FIU', 5, 'florida international university', 'gabchalk'),
 ('RSO for FIU2', 1, 'florida international university', 'gabbyfiu'),
 ('rso for ucf', 1, 'university of central florida', 'gabby'),
-('rso for UCF2', 1, 'university of central florida', 'gabbyucf');
+('rso for UCF2', 2, 'university of central florida', 'gabbyucf');
 
 --
 -- Triggers `RSO`
@@ -128,6 +130,7 @@ INSERT INTO `RSOmembers` (`RSOname`, `userId`) VALUES
 ('RSO for FIU', 'gabchalk'),
 ('RSO for FIU2', 'gabbyfiu'),
 ('rso for ucf', 'gabby'),
+('rso for UCF2', 'gabby'),
 ('rso for UCF2', 'gabbyucf');
 
 --

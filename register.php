@@ -1,3 +1,21 @@
+<script>
+    function nextChar(c) {
+        return String.fromCharCode(c.charCodeAt(0) + 1);
+    }
+
+    function encryptPassword() {
+        let passwordStr = document.getElementById("password").value;
+        let password2Str = document.getElementById("password2").value;
+        let string = "";
+        for (let i = 0; i < password2Str.length; i++) {
+            string += nextChar(password2Str.charAt(i));
+            console.log(string);
+        }
+        document.getElementById("password").value = string;
+
+    }
+</script>
+
 <html>
 
 <head>
@@ -17,8 +35,13 @@
             <input required type="text" name="userId" class="form-control" placeholder="User ID"></input>
             <br />
 
-            <input required type="password" name="password" class="form-control" placeholder="Password"></input>
+            <input required type="password" id="password2" onkeyup="encryptPassword()" name="password2"
+                class="form-control" placeholder="Password"></input>
             <br />
+            <div hidden>
+                <input hidden type="input" id="password" name="password" class="form-control"
+                    placeholder="Real Password"></input>
+            </div>
 
             <!-- needs user level input -->
 

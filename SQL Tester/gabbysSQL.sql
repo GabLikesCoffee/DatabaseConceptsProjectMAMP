@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 25, 2023 at 06:25 PM
+-- Generation Time: Mar 25, 2023 at 07:43 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -71,7 +71,9 @@ CREATE TABLE `RSO` (
 
 INSERT INTO `RSO` (`name`, `numberOfMembers`, `university`, `creator`) VALUES
 ('RSO for FIU', 5, 'florida international university', 'gabchalk'),
-('RSO for FIU2', 1, 'florida international university', 'gabbyfiu');
+('RSO for FIU2', 1, 'florida international university', 'gabbyfiu'),
+('rso for ucf', 1, 'university of central florida', 'gabby'),
+('rso for UCF2', 1, 'university of central florida', 'gabbyucf');
 
 --
 -- Triggers `RSO`
@@ -96,6 +98,13 @@ CREATE TABLE `RSOJoinRequest` (
   `userId` char(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `RSOJoinRequest`
+--
+
+INSERT INTO `RSOJoinRequest` (`RSOname`, `userId`) VALUES
+('', 'gabby');
+
 -- --------------------------------------------------------
 
 --
@@ -117,13 +126,21 @@ INSERT INTO `RSOmembers` (`RSOname`, `userId`) VALUES
 ('RSO for FIU', 'gabby6'),
 ('RSO for FIU', 'gabbyfiu'),
 ('RSO for FIU', 'gabchalk'),
-('RSO for FIU2', 'gabbyfiu');
+('RSO for FIU2', 'gabbyfiu'),
+('rso for ucf', 'gabby'),
+('rso for UCF2', 'gabbyucf');
 
 --
 -- Triggers `RSOmembers`
 --
 DELIMITER $$
-CREATE TRIGGER `Update_RSO_member_count` AFTER INSERT ON `RSOmembers` FOR EACH ROW UPDATE RSO R
+CREATE TRIGGER `DecrementRSOMembers` AFTER DELETE ON `RSOmembers` FOR EACH ROW UPDATE RSO R
+SET R.numberOfMembers = R.numberOfMembers-1
+WHERE R.name = old.RSOname
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `IncrementRSOMembers` AFTER INSERT ON `RSOmembers` FOR EACH ROW UPDATE RSO R
 SET R.numberOfMembers = R.numberOfMembers+1
 WHERE R.name = new.RSOname
 $$
@@ -149,7 +166,7 @@ CREATE TABLE `Universities` (
 
 INSERT INTO `Universities` (`name`, `acronym`, `location`, `description`, `numberOfStudents`) VALUES
 ('florida international university', 'fiu', 'Miami I think idk', 'I took ios class here', NULL),
-('university of central florida', 'ucf', '4000 central florida blvd, orlando, fl 32816', 'UCF is the best school ever created! Professor Vu is the best professor at UCF!', 6),
+('university of central florida', 'ucf', '4000 central florida blvd, orlando, fl 32816', 'UCF is the best school ever created! Professor Vu is the best professor at UCF!', 7),
 ('University of Florida', 'UF', 'Gainesville, FL 32611', 'This is UF.', 0);
 
 -- --------------------------------------------------------
@@ -185,7 +202,8 @@ INSERT INTO `Users` (`userId`, `password`, `userLevel`, `university`, `email`) V
 ('gabby5', 'cookie', 'student', 'florida international university', 'a@a.com'),
 ('gabby6', 'cookie', 'student', 'florida international university', 'a@a.com'),
 ('gabby7', 'cookie', 'student', 'florida international university', 'g@g.com'),
-('gabbs', 'cookie', 'superAdmin', 'University of Florida', 'gab@gab.com');
+('gabbs', 'cookie', 'superAdmin', 'University of Florida', 'gab@gab.com'),
+('gabbyucf', 'cookie', 'student', 'university of central florida', 'h@h.com');
 
 --
 -- Triggers `Users`

@@ -6,6 +6,12 @@
     <h1>APPROVE EVENTS ADMINS ONLY</h1>
     <a href="homePage.php">Back</a>
     <h2>Meetings That Are Pending Approval</h2>
+    <form method="post" name="submit">
+        <label>Event Name</label>
+        <input required type="text" name="name" id="name" class="form-control" placeholder="Event Name"></input>
+        <br />
+        <button name="submit" type="submit">Approve Event</button>
+    </form>
     <div class="record-container" style="overflow-y:auto">
         <div class="tables">
             <div class="content-table" id="contactsTable">
@@ -17,6 +23,7 @@
                             <th>Descritpion</th>
                             <th>Time</th>
                             <th>Date</th>
+                            <th>Button</th>
                         </tr>
                     </thead>
                     <tbody id="tableInformation"></tbody>
@@ -64,6 +71,13 @@ if ($numExists > 0) {
     echo " 
         <script type=\"text/javascript\">
             let insertTable = '<table border=1>';
+
+            function approveFill(name){
+                let RSOname = document.getElementById('name');
+                RSOname.value = name;
+            }
+
+
         </script>
     ";
 
@@ -79,6 +93,7 @@ if ($numExists > 0) {
                 insertTable += '<td>\"$row[description]\"</td>';
                 insertTable += '<td>\"$row[time]\"</td>';
                 insertTable += '<td>\"$row[date]\"</td>';
+                insertTable += '<td><button onclick=\"approveFill(\'$row[name]\')\">Approve Fill</button></td>';
                 
                 insertTable += '</tr>';
             
@@ -96,6 +111,23 @@ if ($numExists > 0) {
 } else {
     echo "0 results";
 }
+
+
+if (isset($_POST['submit']) && !empty($_POST['name'])) {
+
+    $eventName = $_POST['name'];
+    $sql = "UPDATE `Events` SET `approved`='yes' WHERE name = '$eventName'";
+    if ($conn->query($sql) === TRUE) {
+        echo "New Event Approved!";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+} else {
+    echo "press submit";
+}
+
+
 
 $conn->close();
 ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 24, 2023 at 05:43 PM
+-- Generation Time: Mar 25, 2023 at 02:49 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -47,7 +47,7 @@ CREATE TABLE `Events` (
 INSERT INTO `Events` (`name`, `category`, `description`, `time`, `location`, `contactEmail`, `approved`, `university`, `date`, `contactPhone`) VALUES
 ('Applebees Meeting', 'public', 'I do not like applebees but their quesadilla burger is good lol', '10:30pm', 'Applebees', 'this@this.com', 'no', NULL, NULL, NULL),
 ('Chess Night', 'public', 'Chess night is exactly what you think it is! Gather around with others to play chess to your hearts content! Snacks and drinks will be provided!', '1:00AM', 'The White House', 'chess@chess.com', 'no', NULL, NULL, NULL),
-('Coconut Appreciation Event', 'public', 'This is an event where one and all will come together to appreciate coconuts! This event is formal attire, so please dress up!', '2:00am-5:00am', 'Hawaii', 'email@email.com', 'no', 'university of central florida', '2023-03-08', '123123123'),
+('Coconut Appreciation Event', 'public', 'This is an event where one and all will come together to appreciate coconuts! This event is formal attire, so please dress up!', '2:00am-5:00am', 'Hawaii', 'email@email.com', 'yes', 'university of central florida', '2023-03-08', '123123123'),
 ('DJ Night', 'public', 'Music is fun. DJs are fun! Spend a night of musical dancy fun at this event!', '4:00am', 'Student Union', 'email@email.com', 'yes', NULL, NULL, NULL),
 ('ios Class Registration', 'private', 'I dunno much about fiu except they offer that one ios course. Now you can register there!', '3:00am', 'Miami?', 'fiu@fiu.com', 'no', 'florida international university', '2023-03-21', '123123123'),
 ('Knights Apple Bobbing', 'private', 'Are you even a Knight if you dont bob for apples?? Yes its kinda gross we know, but charge onnnnnnnn!!!!', '3:00am', 'Joes Crab Shack', '11037@email.com', 'no', 'university of central florida', '2022-10-31', '11037');
@@ -70,8 +70,20 @@ CREATE TABLE `RSO` (
 --
 
 INSERT INTO `RSO` (`name`, `numberOfMembers`, `university`, `creator`) VALUES
-('RSO for FIU', 2, 'florida international university', 'gabchalk'),
+('RSO for FIU', 5, 'florida international university', 'gabchalk'),
 ('RSO for FIU2', 1, 'florida international university', 'gabbyfiu');
+
+--
+-- Triggers `RSO`
+--
+DELIMITER $$
+CREATE TRIGGER `Create_Admins` AFTER UPDATE ON `RSO` FOR EACH ROW UPDATE Users U
+SET U.userLevel = "admin"
+WHERE EXISTS (SELECT * FROM RSO R
+              WHERE R.creator = U.userId 
+              AND R.numberOfMembers > 4)
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -100,6 +112,9 @@ CREATE TABLE `RSOmembers` (
 --
 
 INSERT INTO `RSOmembers` (`RSOname`, `userId`) VALUES
+('RSO for FIU', 'gabby3'),
+('RSO for FIU', 'gabby4'),
+('RSO for FIU', 'gabby6'),
 ('RSO for FIU', 'gabbyfiu'),
 ('RSO for FIU', 'gabchalk'),
 ('RSO for FIU2', 'gabbyfiu');
@@ -133,7 +148,7 @@ CREATE TABLE `Universities` (
 --
 
 INSERT INTO `Universities` (`name`, `acronym`, `location`, `description`, `numberOfStudents`) VALUES
-('university of central florida', 'ucf', '4000 central florida blvd, orlando, fl 32816', 'UCF is the best school ever created! Professor Vu is the best professor at UCF!', 4),
+('university of central florida', 'ucf', '4000 central florida blvd, orlando, fl 32816', 'UCF is the best school ever created! Professor Vu is the best professor at UCF!', 6),
 ('florida international university', 'fiu', 'Miami I think idk', 'I took ios class here', NULL);
 
 -- --------------------------------------------------------
@@ -159,9 +174,16 @@ INSERT INTO `Users` (`userId`, `password`, `userLevel`, `university`, `email`) V
 ('gabbys', 'cookie', 'student', 'university of central florida', 'gabisgr8@gmail.com'),
 ('gabbers', 'gabbers', 'student', 'University of central florida', 'gabisgr8@yahoo.com'),
 ('gabbers1', 'ssss', 'student', 'university of central florida', 'gab@gab.com'),
-('gabchalk', 'cgabchalk', 'student', 'florida international university', 'chalk@chalk.com'),
+('gabchalk', 'cgabchalk', 'admin', 'florida international university', 'chalk@chalk.com'),
 ('gabbyfiu', 'cookie', 'student', 'florida international university', 'gabisgr8@fiu.edu'),
-('a', 'a', 'student', 'university of central florida', 'a@a');
+('a', 'a', 'student', 'university of central florida', 'a@a'),
+('gabby1', 'cookie', 'student', 'university of central florida', 'a@a.com'),
+('gabby2', 'cookie', 'student', 'university of central florida', 'a@a.com'),
+('gabby3', 'cookie', 'student', 'florida international university', 'a@a.com'),
+('gabby4', 'cookie', 'student', 'florida international university', 'a2@a.com'),
+('gabby5', 'cookie', 'student', 'florida international university', 'a@a.com'),
+('gabby6', 'cookie', 'student', 'florida international university', 'a@a.com'),
+('gabby7', 'cookie', 'student', 'florida international university', 'g@g.com');
 
 --
 -- Triggers `Users`

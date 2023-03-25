@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 25, 2023 at 02:49 PM
+-- Generation Time: Mar 25, 2023 at 06:25 PM
 -- Server version: 5.7.39
 -- PHP Version: 7.4.33
 
@@ -136,11 +136,11 @@ DELIMITER ;
 --
 
 CREATE TABLE `Universities` (
-  `name` char(100) DEFAULT NULL,
-  `acronym` char(20) DEFAULT NULL,
-  `location` char(100) DEFAULT NULL,
+  `name` char(100) NOT NULL,
+  `acronym` char(20) NOT NULL,
+  `location` char(100) NOT NULL,
   `description` char(255) DEFAULT NULL,
-  `numberOfStudents` int(11) DEFAULT NULL
+  `numberOfStudents` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -148,8 +148,9 @@ CREATE TABLE `Universities` (
 --
 
 INSERT INTO `Universities` (`name`, `acronym`, `location`, `description`, `numberOfStudents`) VALUES
+('florida international university', 'fiu', 'Miami I think idk', 'I took ios class here', NULL),
 ('university of central florida', 'ucf', '4000 central florida blvd, orlando, fl 32816', 'UCF is the best school ever created! Professor Vu is the best professor at UCF!', 6),
-('florida international university', 'fiu', 'Miami I think idk', 'I took ios class here', NULL);
+('University of Florida', 'UF', 'Gainesville, FL 32611', 'This is UF.', 0);
 
 -- --------------------------------------------------------
 
@@ -183,7 +184,8 @@ INSERT INTO `Users` (`userId`, `password`, `userLevel`, `university`, `email`) V
 ('gabby4', 'cookie', 'student', 'florida international university', 'a2@a.com'),
 ('gabby5', 'cookie', 'student', 'florida international university', 'a@a.com'),
 ('gabby6', 'cookie', 'student', 'florida international university', 'a@a.com'),
-('gabby7', 'cookie', 'student', 'florida international university', 'g@g.com');
+('gabby7', 'cookie', 'student', 'florida international university', 'g@g.com'),
+('gabbs', 'cookie', 'superAdmin', 'University of Florida', 'gab@gab.com');
 
 --
 -- Triggers `Users`
@@ -222,6 +224,12 @@ ALTER TABLE `RSOJoinRequest`
 --
 ALTER TABLE `RSOmembers`
   ADD PRIMARY KEY (`RSOname`,`userId`);
+
+--
+-- Indexes for table `Universities`
+--
+ALTER TABLE `Universities`
+  ADD PRIMARY KEY (`name`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

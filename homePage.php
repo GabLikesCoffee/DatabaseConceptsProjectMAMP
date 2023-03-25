@@ -34,6 +34,7 @@
                             <th>Date</th>
                             <th>Location</th>
                             <th>Contact</th>
+                            <th>Rating/Comments</th>
                         </tr>
                     </thead>
                     <tbody id="tableInformation"></tbody>
@@ -119,6 +120,18 @@ if ($numExists > 0) {
                 insertTable += '<td>$row[date]</td>';
                 insertTable += '<td>$row[location]</td>';
                 insertTable += '<td>$row[contactPhone] <br /> $row[contactEmail]</td>';
+                insertTable += '<td>' + 
+                    \"<input type='radio' id='star5' class='rating' value='1' />\" +
+                    \"<label for='star5' title='5 stars'></label>\" +
+                    \"<input type='radio' id='star4' class='rating' value='2' />\" +
+                    \"<label for='star4' title='4 stars'></label>\" +
+                    \"<input type='radio' id='star3' class='rating' value='3' />\" +
+                    \"<label for='star3' title='3 stars'></label>\" +
+                    \"<input type='radio' id='star2' class='rating' value='4' />\" +
+                    \"<label for='star2' title='2 stars'></label>\" +
+                    \"<input type='radio' id='star1' class='rating' value='5' />\" +
+                    \"<label for='star1' title='1 stars'></label>\" +
+                '</td>';
 
                 insertTable += '</tr>';
             
@@ -297,5 +310,31 @@ $conn->close();
         outline: 0;
         background-color: #eac3ce;
         text-align: center;
+    }
+
+    .rating {
+        display: inline-flex;
+        flex-direction: row-reverse;
+    }
+
+    .rating input {
+    display: none;
+    }
+
+    .rating label {
+    color: #ddd;
+    font-size: 30px;
+    margin-right: 10px;
+    }
+
+    .rating label:before {
+    content: "\2605";
+    position: relative;
+    display: inline-block;
+    color: #777;
+    }
+
+    .rating input:checked ~ label:before {
+    color: #ffcc00;
     }
 </style>

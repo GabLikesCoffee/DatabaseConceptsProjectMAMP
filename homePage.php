@@ -1,6 +1,8 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 </head>
 
@@ -42,9 +44,20 @@
             </div>
         </div>
     </div>
-    <div id="approveEventBtnDiv"></div>
-    <a href="joinRso.php"><button>Join an RSO!</button></a>
-    <a href="createRso.php"><button>Create an RSO!</button></a>
+
+    <table>
+        <tr>
+            <td>
+                <div id="approveEventBtnDiv"></div>
+            </td>
+            <td>
+                <div id="leaveRSOBtnDiv"></div>
+            </td>
+
+            <td><a href="joinRso.php"><button class="btn btn-success">Join an RSO!</button></a></td>
+            <td><a href="createRso.php"><button class="btn btn-success">Create an RSO!</button></a></td>
+        </tr>
+    </table>
 </body>
 
 </html>
@@ -60,21 +73,45 @@ if (!$_SESSION['userId']) {
 $userId = $_SESSION['userId'];
 
 $sqlCheckAdmin = "SELECT * FROM Users WHERE userId='$userId'";
+$sqlCheckRSOCreator = "SELECT * FROM RSO WHERE creator='$userId'";
+$sqlCheckRSOMember = "SELECT * FROM RSOmembers WHERE userId='$userId'";
 $sqlCheckAdminResults = $conn->query($sqlCheckAdmin);
+$sqlCheckRSOCreatorResults = $conn->query($sqlCheckRSOCreator);
+$sqlCheckRSOMemberResults = $conn->query($sqlCheckRSOMember);
 
 $item = $sqlCheckAdminResults->fetch_assoc();
+$item2 = $sqlCheckRSOCreatorResults->fetch_assoc();
+$item3 = $sqlCheckRSOMemberResults->fetch_assoc();
 
 if ($item) {
     $userLevel = $item["userLevel"];
     echo $userLevel;
 }
 
+if ($item3) {
+    echo " 
+        <script type=\"text/javascript\">
+            let insertRSOLeaveButton = '<a href=leaveRso.php><button class=\"btn btn-success\">Leave an RSO</button></a>';
+            document.getElementById('leaveRSOBtnDiv').innerHTML = insertRSOLeaveButton;
+        </script>
+    ";
+}
+if ($item2) {
+    echo " 
+        <script type=\"text/javascript\">
+            let insertButtons = '<td><a href=approveRSOMembers.php><button class=\"btn btn-success\">Approve RSO Members</button></a></td>';
+            document.getElementById('approveEventBtnDiv').innerHTML = insertButtons;
+        </script>
+    ";
+}
+
 if ($userLevel == "admin") {
     echo " 
         <script type=\"text/javascript\">
-            let insertButtons = '<a href=approveEvents.php><button>Approve Events</button></a><br />';
-            insertButtons += '<a href=createEvents.php><button>Create Events</button></a>';
-            document.getElementById('approveEventBtnDiv').innerHTML = insertButtons;
+            let insertButtons2 = '<td><a href=approveEvents.php><button class=\"btn btn-success\">Approve Events</button></a></td>';
+            insertButtons2 += '<td><a href=createEvents.php><button class=\"btn btn-success\">Create Events</button></a></td>';
+            insertButtons2 += '<td><a href=approveRSOMembers.php><button class=\"btn btn-success\">Approve RSO Members</button></a></td>';
+            document.getElementById('approveEventBtnDiv').innerHTML = insertButtons2;
         </script>
     ";
 
@@ -318,23 +355,27 @@ $conn->close();
     }
 
     .rating input {
-    display: none;
+        display: none;
     }
 
     .rating label {
-    color: #ddd;
-    font-size: 30px;
-    margin-right: 10px;
+        color: #ddd;
+        font-size: 30px;
+        margin-right: 10px;
     }
 
     .rating label:before {
-    content: "\2605";
-    position: relative;
-    display: inline-block;
-    color: #777;
+        content: "\2605";
+        position: relative;
+        display: inline-block;
+        color: #777;
     }
 
-    .rating input:checked ~ label:before {
-    color: #ffcc00;
+    .rating input:checked~label:before {
+        color: #ffcc00;
+    }
+
+    #approveEventBtnDiv {
+        display: inline;
     }
 </style>

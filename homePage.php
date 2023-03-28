@@ -124,14 +124,9 @@ echo "
 </script>
 ";
 
-$sqlEvents = "SELECT * FROM Events WHERE category='public'";
-$sqlEvents2 = "SELECT * FROM Events E, Users U
-WHERE E.category = 'private' AND E.university = U.university AND U.userId = '$userId'";
-$sqlEvents3 = "SELECT * FROM Events WHERE category='public' UNION SELECT * FROM Events E, Users U
-WHERE E.category = 'private' AND E.university = U.university AND U.userId = '$userId'";
-$sqlEvents4 = "SELECT * FROM Events E WHERE category='public' UNION SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone FROM Events E, Users U WHERE E.category = 'private' AND E.university = U.university AND U.userId = '$userId'";
+$sqlEvents = "SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone FROM Events E WHERE category='public' UNION SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone FROM Events E, Users U WHERE E.category = 'private' AND E.university = U.university AND U.userId = '$userId' UNION SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone FROM Events E, Users U, RSOmembers R WHERE E.category = 'RSO' AND E.RSOname = R.RSOname AND R.userId = '$userId'";
 
-$result = $conn->query($sqlEvents4);
+$result = $conn->query($sqlEvents);
 $numExists = $result->num_rows;
 if ($numExists > 0) {
     // output data of each row

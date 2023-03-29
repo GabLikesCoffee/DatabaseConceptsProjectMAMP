@@ -219,6 +219,18 @@ $$
 DELIMITER ;
 
 --
+-- Table structure for table `Comments`
+--
+
+CREATE TABLE `Comments` (
+  `commentId` int NOT NULL AUTO_INCREMENT,
+  `message` char(100) DEFAULT NULL,
+  `eventName` char(40) DEFAULT NULL,
+  `userID` char(40) DEFAULT NULL,
+  Primary KEY (commentId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
 -- Indexes for dumped tables
 --
 

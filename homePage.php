@@ -12,7 +12,7 @@
 
         <h1 class="event-header">Events</h1>
         <span id="welcome-text"></span>
-        <!-- <p>Click here to clean <a href="logout.php" tite="Logout">Session AKA log out.</a></p> -->
+
 
         <button class="logout-btn">
             <a href="logout.php" tite="Logout">Logout</a>
@@ -56,6 +56,7 @@
 
             <td><a href="joinRso.php"><button class="btn btn-success">Join an RSO!</button></a></td>
             <td><a href="createRso.php"><button class="btn btn-success">Create an RSO!</button></a></td>
+            <td><a href='comment.php'><button class='btn btn-success'>Make a Comment</button></a></td>
         </tr>
     </table>
 </body>
@@ -163,6 +164,8 @@ if ($numExists > 0) {
                     \"<label for='star2' title='2 stars'></label>\" +
                     \"<input type='radio' id='star1' class='rating' value='5' />\" +
                     \"<label for='star1' title='1 stars'></label>\" +
+                    \"<br />\" + 
+
                 '</td>';
 
                 insertTable += '</tr>';
@@ -178,6 +181,8 @@ if ($numExists > 0) {
             document.getElementById('tableInformation').innerHTML = insertTable;
         </script>
         ";
+
+
 } else {
     echo "0 results";
 }
@@ -210,6 +215,8 @@ echo "<script type=\"text/javascript\">
         }
     }
     </script> ";
+
+
 
 
 $conn->close();

@@ -4,6 +4,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <script>
+        function toggleRateForm() {
+            let rateForm = document.getElementById('rateForm');
+            if (rateForm.getAttribute("hidden") !== null) {
+                rateForm.removeAttribute("hidden");
+            } else {
+                rateForm.setAttribute("hidden", true);
+            }
+        }
+
+        function rateFill(eventName) {
+            let eventNameInput = document.getElementById("eventName");
+            eventNameInput.value = eventName;
+        }
+    </script>
 </head>
 
 <body>
@@ -17,6 +32,23 @@
         <button class="logout-btn">
             <a href="logout.php" tite="Logout">Logout</a>
         </button>
+        <button class="logout-btn" onclick="toggleRateForm()">
+            Rate an Event!
+        </button>
+    </div>
+    <div id="rateForm" hidden>
+        <form method="post" name="likeform">
+            <input required type="text" class="form-control" placeholder="Event Name" name="eventName"
+                id="eventName"></input>
+            <select required name="rating">
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5</option>
+            </select>
+            <button name="rateform" type="submit">Rate</button>
+        </form>
     </div>
 
     <div class="record-container" style="overflow-y:auto">
@@ -36,7 +68,8 @@
                             <th>Date</th>
                             <th>Location</th>
                             <th>Contact</th>
-                            <th>Rating/Comments</th>
+                            <th>Average Rating</th>
+                            <th>Like Button</th>
                         </tr>
                     </thead>
                     <tbody id="tableInformation"></tbody>
@@ -125,8 +158,7 @@ echo "
 </script>
 ";
 
-$sqlEvents = "SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone FROM Events E WHERE category='public' UNION SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone FROM Events E, Users U WHERE E.category = 'private' AND E.university = U.university AND U.userId = '$userId' UNION SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone FROM Events E, Users U, RSOmembers R WHERE E.category = 'RSO' AND E.RSOname = R.RSOname AND R.userId = '$userId'";
-
+$sqlEvents = "SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone, e.avgRating FROM Events E WHERE category='public' UNION SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone, e.avgRating FROM Events E, Users U WHERE E.category = 'private' AND E.university = U.university AND U.userId = '$userId' UNION SELECT e.name, e.category, e.description, e.time, e.location, e.contactEmail, e.approved, e.university, e.date, e.contactPhone, e.avgRating FROM Events E, Users U, RSOmembers R WHERE E.category = 'RSO' AND E.RSOname = R.RSOname AND R.userId = '$userId'";
 $result = $conn->query($sqlEvents);
 $numExists = $result->num_rows;
 if ($numExists > 0) {
@@ -141,7 +173,10 @@ if ($numExists > 0) {
 
 
     while ($row = $result->fetch_assoc()) {
-
+        $avgRating = $row[avgRating];
+        if ($avgRating == 0) {
+            $avgRating = "No Ratings Yet!";
+        }
         echo "
             <script type=\"text/javascript\">
                 insertTable += '<tr>'
@@ -153,20 +188,8 @@ if ($numExists > 0) {
                 insertTable += '<td>$row[date]</td>';
                 insertTable += '<td>$row[location]</td>';
                 insertTable += '<td>$row[contactPhone] <br /> $row[contactEmail]</td>';
-                insertTable += '<td>' + 
-                    \"<input type='radio' id='star5' class='rating' value='1' />\" +
-                    \"<label for='star5' title='5 stars'></label>\" +
-                    \"<input type='radio' id='star4' class='rating' value='2' />\" +
-                    \"<label for='star4' title='4 stars'></label>\" +
-                    \"<input type='radio' id='star3' class='rating' value='3' />\" +
-                    \"<label for='star3' title='3 stars'></label>\" +
-                    \"<input type='radio' id='star2' class='rating' value='4' />\" +
-                    \"<label for='star2' title='2 stars'></label>\" +
-                    \"<input type='radio' id='star1' class='rating' value='5' />\" +
-                    \"<label for='star1' title='1 stars'></label>\" +
-                    \"<br />\" + 
-
-                '</td>';
+                insertTable += '<td>$avgRating</td>';
+                insertTable += '<td><button onclick=\"rateFill(\'$row[name]\')\">Rate Fill</button></td>';
 
                 insertTable += '</tr>';
             
@@ -217,6 +240,26 @@ echo "<script type=\"text/javascript\">
     </script> ";
 
 
+if (isset($_POST['rateform']) && !empty($_POST['eventName']) && !empty($_POST['rating'])) {
+    $eventName = $_POST['eventName'];
+    $rating = $_POST['rating'];
+    echo $eventName;
+    echo $rating;
+    $rateSql = "INSERT INTO `Ratings`(`userId`, `eventName`, `rating`) VALUES ('$userId','$eventName', '$rating')";
+    $updateRateSql = "UPDATE `Ratings` SET `rating`='$rating' WHERE `eventName` = '$eventName' AND `userId` = '$userId'";
+    if ($conn->query($rateSql) === TRUE) {
+        echo "Rated!";
+    } else {
+        if ($conn->query($updateRateSql) === TRUE) {
+            echo "Updated Rating!";
+        } else {
+            echo "error Rating" . $updateRateSql . "<br>" . $conn->error;
+        }
+    }
+
+} else {
+    echo "notset";
+}
 
 
 $conn->close();

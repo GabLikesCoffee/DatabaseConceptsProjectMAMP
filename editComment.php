@@ -3,34 +3,17 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
     <center>
-        <h1>Make a comment</h1>
+        <h1>Edit Your Comment/s</h1>
     </center>
     <br />
     <br />
-    <form method="post" name="submit">
 
-        <input required type="text" name="message" class="form-control" placeholder="Type here..."></input>
-
-        <label>Event:</label>
-        <br />
-        <select class="form-select" name="eventName" id='eventName'>
-            <option value="Applebees Meeting">Applebees Meeting</option>
-            <option value="Chess Night">Chess Night</option>
-            <option value="Coconut Appreciation Event">Coconut Appreciation Event</option>
-            <option value="DJ Night">DJ Night</option>
-            <option value="ios Class Registration">ios Class Registration</option>
-
-
-        </select>
-        <button class="btn btn-primary" name="submit">Submit</button>
-
-    </form>
-
-    <a href="homePage.php"><button class="btn btn-primary">Go Back</button></a>
+    <a href="comment.php"><button class="btn btn-primary">Go Back</button></a>
 
     <div class="record-container" style="overflow-y:auto">
         <div class="tables">
@@ -45,6 +28,7 @@
                             <th>Event</th>
                             <th>Comment</th>
                             <th>User</th>
+                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody id="tableInformation"></tbody>
@@ -55,8 +39,7 @@
 
     <table>
         <tr>
-            <td><a href="deleteComment.php"><button class="btn btn-success">Delete Your Comment</button></a></td>
-            <td><a href="editComment.php"><button class="btn btn-success">Edit your Comment</button></a></td>
+            <td><a href="deleteComment.php"><button class="btn btn-success">Delete your Comment</button></a></td>
         </tr>
     </table>
 
@@ -81,25 +64,12 @@
     // $result = $conn->query($sqlEvents);
     // $numExists = $result->num_rows;
 
-    if (isset($_POST['submit']) && !empty($_POST['message'])) {
 
-        $message = $_POST['message'];
-        $eventName = $_POST['eventName'];
-    
-        $sql = "INSERT INTO Comments (message, eventName, userId) 
-        VALUES ('$message', '$eventName','$userId')";
-            if ($conn->query($sql) === TRUE) {
-                echo "Comment Posted!";
-
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-    }
-
-
-    $sqlEvents = "SELECT e.commentId, e.message, e.eventName, e.userId From Comments E";
+    $sqlEvents = "SELECT e.commentId, e.message, e.eventName, e.userId FROM Comments e WHERE e.userId = '$userId'";
     $result = $conn->query($sqlEvents);
     $numExists = $result->num_rows;
+
+    echo "---- $userId ---- ";
 
     if ($numExists > 0) {
         // output data of each row
@@ -111,15 +81,22 @@
             </script>
         ";
 
+
+
+
     while ($row = $result->fetch_assoc()) {
 
         echo "
             <script type=\"text/javascript\">
+
                 insertTable += '<tr>'
 
                 insertTable += '<td>$row[eventName]</td>';
                 insertTable += '<td>$row[message]</td>';
                 insertTable += '<td>$row[userId]</td>';
+                insertTable += '<td>' +
+                    \"<button type='button' style='height:35px;width:35px id='edit-btn' onclick='editComment($row[commentId])'>edit</button>\" +
+                '</td>';
 
                 insertTable += '</tr>';
             
@@ -141,6 +118,20 @@
     } else {
     echo "0 results";
     }
+
+    $commentId = $_POST['commentId'];
+
+    $message = $_POST['message'];
+    $sql = "UPDATE Comments SET message='$message' WHERE commentId=$commentId";
+    // Update the comment text in the database
+    $sql = "UPDATE Comments SET message='$message' WHERE commentId='$commentId'";
+    if ($conn->query($sql) === TRUE) {
+    // If the update was successful, return a success message
+    echo "Comment updated successfully";
+    } else {
+    // If there was an error with the update, return an error message
+    echo "Error updating comment: " . $conn->error;
+}
 
 
     $conn->close();
@@ -174,6 +165,29 @@
             }
         }
     }
+
+    function editComment(commentId) {
+
+        // Prompt the user for a new comment text
+        var newText = prompt("Enter the new comment text:");
+
+            // Make an AJAX request to update the comment in the database
+            $.ajax({
+            url: "editComment.php",
+            method: "POST",
+            data: { commentId: commentId, message: newText },
+            success: function(response) {
+                // Update the comment text on the page after it has been updated in the database
+                // $('#comment_' + commentId).text(newText);
+
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+            // If there was an error with the update, log the error to the console
+            console.error("Error updating comment:", error);
+            }
+            });
+        }
 
 
 </script> 

@@ -3,34 +3,17 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
     <center>
-        <h1>Make a comment</h1>
+        <h1>Delete Your Comment/s</h1>
     </center>
     <br />
     <br />
-    <form method="post" name="submit">
 
-        <input required type="text" name="message" class="form-control" placeholder="Type here..."></input>
-
-        <label>Event:</label>
-        <br />
-        <select class="form-select" name="eventName" id='eventName'>
-            <option value="Applebees Meeting">Applebees Meeting</option>
-            <option value="Chess Night">Chess Night</option>
-            <option value="Coconut Appreciation Event">Coconut Appreciation Event</option>
-            <option value="DJ Night">DJ Night</option>
-            <option value="ios Class Registration">ios Class Registration</option>
-
-
-        </select>
-        <button class="btn btn-primary" name="submit">Submit</button>
-
-    </form>
-
-    <a href="homePage.php"><button class="btn btn-primary">Go Back</button></a>
+    <a href="comment.php"><button class="btn btn-primary">Go Back</button></a>
 
     <div class="record-container" style="overflow-y:auto">
         <div class="tables">
@@ -45,6 +28,7 @@
                             <th>Event</th>
                             <th>Comment</th>
                             <th>User</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody id="tableInformation"></tbody>
@@ -55,7 +39,6 @@
 
     <table>
         <tr>
-            <td><a href="deleteComment.php"><button class="btn btn-success">Delete Your Comment</button></a></td>
             <td><a href="editComment.php"><button class="btn btn-success">Edit your Comment</button></a></td>
         </tr>
     </table>
@@ -81,25 +64,12 @@
     // $result = $conn->query($sqlEvents);
     // $numExists = $result->num_rows;
 
-    if (isset($_POST['submit']) && !empty($_POST['message'])) {
 
-        $message = $_POST['message'];
-        $eventName = $_POST['eventName'];
-    
-        $sql = "INSERT INTO Comments (message, eventName, userId) 
-        VALUES ('$message', '$eventName','$userId')";
-            if ($conn->query($sql) === TRUE) {
-                echo "Comment Posted!";
-
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-    }
-
-
-    $sqlEvents = "SELECT e.commentId, e.message, e.eventName, e.userId From Comments E";
+    $sqlEvents = "SELECT e.commentId, e.message, e.eventName, e.userId FROM Comments e WHERE e.userId = '$userId'";
     $result = $conn->query($sqlEvents);
     $numExists = $result->num_rows;
+
+    echo "---- $userId ---- ";
 
     if ($numExists > 0) {
         // output data of each row
@@ -111,15 +81,22 @@
             </script>
         ";
 
+
+
+
     while ($row = $result->fetch_assoc()) {
 
         echo "
             <script type=\"text/javascript\">
+
                 insertTable += '<tr>'
 
                 insertTable += '<td>$row[eventName]</td>';
                 insertTable += '<td>$row[message]</td>';
                 insertTable += '<td>$row[userId]</td>';
+                insertTable += '<td>' +
+                    \"<button type='button' style='height:35px;width:35px id='del-btn' onclick='deleteComment($row[commentId])'>delete</button>\" +
+                '</td>';
 
                 insertTable += '</tr>';
             
@@ -141,6 +118,12 @@
     } else {
     echo "0 results";
     }
+
+    $commentId = $_POST['commentId'];
+
+    // Delete the comment with the specified ID from the Comments table
+    $sql = "DELETE FROM Comments WHERE commentId = $commentId";
+    $result = mysqli_query($conn, $sql);
 
 
     $conn->close();
@@ -174,6 +157,20 @@
             }
         }
     }
+
+    function deleteComment(commentId) {
+        if (confirm("Are you sure you want to delete this comment?")) {
+            $.ajax({
+            url: "deleteComment.php",
+            method: "POST",
+            data: { commentId: commentId },
+            success: function(response) {
+                // Reload the comments page after the comment has been deleted
+                location.reload();
+            }
+            });
+        }
+}
 
 
 </script> 

@@ -31,15 +31,16 @@ CREATE TABLE `Comments` (
   `commentId` int(11) NOT NULL,
   `message` char(100) DEFAULT NULL,
   `eventName` char(40) DEFAULT NULL,
-  `userID` char(40) DEFAULT NULL
+  `userId` char(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `Comments`
 --
 
-INSERT INTO `Comments` (`commentId`, `message`, `eventName`, `userID`) VALUES
-(17, 'hello', 'Applebees Meeting', 'gabby');
+INSERT INTO `Comments` (`commentId`, `message`, `eventName`, `userId`) VALUES
+(17, 'hello', 'Applebees Meeting', 'gabby'),
+(18, 'josh', 'Applebees Meeting', 'joshucf1');
 
 -- --------------------------------------------------------
 

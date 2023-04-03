@@ -5,19 +5,19 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <script>
-        function toggleRateForm() {
-            let rateForm = document.getElementById('rateForm');
-            if (rateForm.getAttribute("hidden") !== null) {
-                rateForm.removeAttribute("hidden");
-            } else {
-                rateForm.setAttribute("hidden", true);
-            }
+    function toggleRateForm() {
+        let rateForm = document.getElementById('rateForm');
+        if (rateForm.getAttribute("hidden") !== null) {
+            rateForm.removeAttribute("hidden");
+        } else {
+            rateForm.setAttribute("hidden", true);
         }
+    }
 
-        function rateFill(eventName) {
-            let eventNameInput = document.getElementById("eventName");
-            eventNameInput.value = eventName;
-        }
+    function rateFill(eventName) {
+        let eventNameInput = document.getElementById("eventName");
+        eventNameInput.value = eventName;
+    }
     </script>
 </head>
 
@@ -84,6 +84,9 @@
                 <div id="approveEventBtnDiv"></div>
             </td>
             <td>
+                <div id="removeMembersBtnDiv"></div>
+            </td>
+            <td>
                 <div id="leaveRSOBtnDiv"></div>
             </td>
 
@@ -134,7 +137,9 @@ if ($item2) {
     echo " 
         <script type=\"text/javascript\">
             let insertButtons = '<td><a href=approveRSOMembers.php><button class=\"btn btn-success\">Approve RSO Members</button></a></td>';
+            let removeButtons = '<td><a href=deleteRSOMembers.php><button class=\"btn btn-success\">Remove RSO Members</button></a></td>';
             document.getElementById('approveEventBtnDiv').innerHTML = insertButtons;
+            document.getElementById('removeMembersBtnDiv').innerHTML = removeButtons;
         </script>
     ";
 }
@@ -266,161 +271,161 @@ $conn->close();
 ?>
 
 <style>
-    body {
-        background-color: white;
-    }
+body {
+    background-color: white;
+}
 
-    .record-container {
-        border-radius: 10px;
-        height: 600px;
-        margin: 30px 0;
-        box-shadow: 0px 0px 3px 0px rgba(1, 0, 1, 1);
-        -webkit-box-shadow: 0px 0px 2px 0px rgba(1, 0, 1, 1);
-        /* color: rgb(65 54 54); */
-    }
+.record-container {
+    border-radius: 10px;
+    height: 600px;
+    margin: 30px 0;
+    box-shadow: 0px 0px 3px 0px rgba(1, 0, 1, 1);
+    -webkit-box-shadow: 0px 0px 2px 0px rgba(1, 0, 1, 1);
+    /* color: rgb(65 54 54); */
+}
 
-    .tables {
-        width: 100%;
-        height: 100%;
-        table-layout: fixed;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        border-radius: 5px;
-        border-radius: 10px;
-        background-color: #A7B688;
-    }
+.tables {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border-radius: 10px;
+    background-color: #A7B688;
+}
 
-    table {
-        border: 1;
-        background-color: #A7B688;
+table {
+    border: 1;
+    background-color: #A7B688;
 
-    }
+}
 
-    .content-table {
-        height: 460px;
-        overflow-x: auto;
-        margin-top: 0px;
-        border-radius: 10px;
-    }
+.content-table {
+    height: 460px;
+    overflow-x: auto;
+    margin-top: 0px;
+    border-radius: 10px;
+}
 
-    #welcome-text {
-        text-align: center;
-        padding-bottom: 10px;
-    }
+#welcome-text {
+    text-align: center;
+    padding-bottom: 10px;
+}
 
-    #contacts td {
-        border: .5px solid rgb(0, 0, 0);
-        text-decoration: none;
-        text-align: center;
+#contacts td {
+    border: .5px solid rgb(0, 0, 0);
+    text-decoration: none;
+    text-align: center;
 
-    }
+}
 
-    #contacts th {
-        border: .5px solid rgb(0, 0, 0);
-        text-decoration: none;
+#contacts th {
+    border: .5px solid rgb(0, 0, 0);
+    text-decoration: none;
 
-    }
+}
 
-    #contacts th {
-        padding: 20px 15px;
-        font-family: 'Karla';
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #9fad8f;
-        ;
-        text-transform: uppercase;
-        width: 200px;
-        text-align: center;
+#contacts th {
+    padding: 20px 15px;
+    font-family: 'Karla';
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #9fad8f;
+    ;
+    text-transform: uppercase;
+    width: 200px;
+    text-align: center;
 
-    }
+}
 
-    .head-bar {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+.head-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    .event-header {
-        text-align: center;
-        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    }
+.event-header {
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
 
-    .logout-btn {
-        width: 160px;
-        font-size: 15px;
-        font-weight: 500;
-        font-family: inherit;
-        padding: 10px;
-        border: 3px solid rgb(0, 0, 0);
-        border-radius: 25px;
-        color: #fff;
-        background-color: #eac3ce;
-        cursor: pointer;
-        opacity: 0.8;
-        transition: all 0.5s ease;
-        outline: none;
-        text-decoration: none;
+.logout-btn {
+    width: 160px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: inherit;
+    padding: 10px;
+    border: 3px solid rgb(0, 0, 0);
+    border-radius: 25px;
+    color: #fff;
+    background-color: #eac3ce;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.5s ease;
+    outline: none;
+    text-decoration: none;
 
-    }
+}
 
-    button:visited {
-        text-decoration: none;
-    }
+button:visited {
+    text-decoration: none;
+}
 
-    a {
-        text-decoration: none;
-    }
+a {
+    text-decoration: none;
+}
 
-    a:visited {
-        text-decoration: none;
-    }
+a:visited {
+    text-decoration: none;
+}
 
-    .search-content {
-        display: flex;
-        justify-content: center;
-        min-width: 150px;
-        padding-bottom: 20px;
-        padding-top: 10px;
-    }
+.search-content {
+    display: flex;
+    justify-content: center;
+    min-width: 150px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+}
 
-    .search-bar {
-        border: 1px #000;
-        border-radius: 5px;
-        height: 20px;
-        width: 200px;
-        padding: 5px 25x 5px 25px;
-        outline: 0;
-        background-color: #eac3ce;
-        text-align: center;
-    }
+.search-bar {
+    border: 1px #000;
+    border-radius: 5px;
+    height: 20px;
+    width: 200px;
+    padding: 5px 25x 5px 25px;
+    outline: 0;
+    background-color: #eac3ce;
+    text-align: center;
+}
 
-    .rating {
-        display: inline-flex;
-        flex-direction: row-reverse;
-    }
+.rating {
+    display: inline-flex;
+    flex-direction: row-reverse;
+}
 
-    .rating input {
-        display: none;
-    }
+.rating input {
+    display: none;
+}
 
-    .rating label {
-        color: #ddd;
-        font-size: 30px;
-        margin-right: 10px;
-    }
+.rating label {
+    color: #ddd;
+    font-size: 30px;
+    margin-right: 10px;
+}
 
-    .rating label:before {
-        content: "\2605";
-        position: relative;
-        display: inline-block;
-        color: #777;
-    }
+.rating label:before {
+    content: "\2605";
+    position: relative;
+    display: inline-block;
+    color: #777;
+}
 
-    .rating input:checked~label:before {
-        color: #ffcc00;
-    }
+.rating input:checked~label:before {
+    color: #ffcc00;
+}
 
-    #approveEventBtnDiv {
-        display: inline;
-    }
+#approveEventBtnDiv {
+    display: inline;
+}
 </style>

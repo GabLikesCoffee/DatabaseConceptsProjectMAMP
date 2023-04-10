@@ -12,6 +12,7 @@
     <br />
     <br />
     <form method="post" name="submit">
+        <h3>Official RSOs</h3>
         <div id="rsoNameSelect">
             No RSOs for you to join right now!
         </div>
@@ -19,6 +20,7 @@
         <div id="rsoPendingNameSelect">
             No RSOs for you to join right now!
         </div>
+        <br />
         <button class="btn btn-primary" name="submit">Request to join RSO</button>
 
     </form>
@@ -40,7 +42,7 @@ if (!$_SESSION['userId']) {
 $userId = $_SESSION['userId'];
 
 
-$sqlRSOs = "SELECT R.name, R.numberOfMembers from Users U, RSO R, RSOmembers RM WHERE R.university=U.university AND U.userId = '$userId' AND RM.RSOname = R.name AND RM.userId != '$userId'";
+$sqlRSOs = "SELECT R.name, R.numberOfMembers from Users U, RSO R WHERE R.university=U.university AND U.userId = '$userId' AND R.creator != '$userId'";
 $result = $conn->query($sqlRSOs);
 $numExists = $result->num_rows;
 if ($numExists > 0) {
@@ -57,8 +59,8 @@ if ($numExists > 0) {
     while ($row = $result->fetch_assoc()) {
         echo " 
         <script type=\"text/javascript\">
-            if($row[numberOfMembers] < 4){
-                pendingSelect += '<option value=\"$row[name]\">$row[name]</option>';
+            if($row[numberOfMembers] < 5){
+                pendingSelect += '<option value=\"$row[name]\">$row[name]</option>';   
             }
             else{
                 insertSelect += '<option value=\"$row[name]\">$row[name]</option>';
